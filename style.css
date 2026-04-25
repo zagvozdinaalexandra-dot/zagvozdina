@@ -248,7 +248,7 @@ body.drawer-open {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: url('/home/tural/Downloads/Yessenov_University.jpg') no-repeat center center/cover;
+    background: url('images/Yessenov_University.jpg') no-repeat center center/cover;
     position: relative;
     overflow: hidden;
 }
