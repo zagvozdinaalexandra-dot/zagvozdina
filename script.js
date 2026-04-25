@@ -18,6 +18,20 @@ function requireAuthAndGo(targetPath) {
     window.location.href = 'auth.html';
 }
 
+function saveUserProfileToStorage(user) {
+    if (!user) return;
+    localStorage.setItem('cyberaware_profile', JSON.stringify(user));
+}
+
+function readUserProfileFromStorage() {
+    try {
+        const raw = localStorage.getItem('cyberaware_profile');
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
 (function initAuthButtonsVisibility() {
     const token = localStorage.getItem('cyberaware_token');
     if (!token) return;
@@ -41,6 +55,7 @@ function requireAuthAndGo(targetPath) {
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('cyberaware_token');
         localStorage.removeItem('cyberaware_post_auth_redirect');
+        localStorage.removeItem('cyberaware_profile');
         window.location.href = 'index.html';
     });
 
@@ -575,6 +590,7 @@ requestAnimationFrame(raf);
                 }
 
                 localStorage.setItem('cyberaware_token', data.token);
+                saveUserProfileToStorage(data.user);
                 const redirectAfterLogin = localStorage.getItem('cyberaware_post_auth_redirect');
                 if (redirectAfterLogin) {
                     localStorage.removeItem('cyberaware_post_auth_redirect');
@@ -597,10 +613,14 @@ requestAnimationFrame(raf);
                 registerError.style.color = '#dc2626';
             }
 
+            const firstNameInput = document.getElementById('register-first-name');
+            const lastNameInput = document.getElementById('register-last-name');
             const emailInput = document.getElementById('register-email');
             const passwordInput = document.getElementById('register-password');
-            if (!emailInput || !passwordInput) return;
+            if (!firstNameInput || !lastNameInput || !emailInput || !passwordInput) return;
 
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
             const email = emailInput.value.trim();
             const password = passwordInput.value;
 
@@ -608,7 +628,7 @@ requestAnimationFrame(raf);
                 const response = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ firstName, lastName, email, password })
                 });
 
                 const data = await response.json();
@@ -630,4 +650,46 @@ requestAnimationFrame(raf);
             }
         });
     }
+})();
+
+// =====================
+// PROFILE PAGE LOGIC
+// =====================
+(function initProfilePage() {
+    const fullNameElement = document.getElementById('profile-full-name');
+    const emailElement = document.getElementById('profile-email');
+    if (!fullNameElement || !emailElement) return;
+
+    const token = localStorage.getItem('cyberaware_token');
+    if (!token) {
+        window.location.href = 'auth.html';
+        return;
+    }
+
+    const storedProfile = readUserProfileFromStorage();
+    if (storedProfile?.email) {
+        const fullName = `${storedProfile.firstName || ''} ${storedProfile.lastName || ''}`.trim();
+        fullNameElement.textContent = fullName || 'Пользователь CyberAware';
+        emailElement.textContent = storedProfile.email;
+    }
+
+    fetch('/api/auth/me', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+        .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok || !data.user) throw new Error('Unauthorized');
+
+            saveUserProfileToStorage(data.user);
+            const fullName = `${data.user.firstName || ''} ${data.user.lastName || ''}`.trim();
+            fullNameElement.textContent = fullName || 'Пользователь CyberAware';
+            emailElement.textContent = data.user.email || 'user@example.com';
+        })
+        .catch(() => {
+            localStorage.removeItem('cyberaware_token');
+            localStorage.removeItem('cyberaware_profile');
+            window.location.href = 'auth.html';
+        });
 })();

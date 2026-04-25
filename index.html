@@ -135,7 +135,7 @@
                         <li data-i18n="teach_threats_3">Атаки на данные</li>
                         <li data-i18n="teach_threats_4">Кража идентичности</li>
                     </ul>
-                    <button class="btn btn-outline" onclick="window.location.href='threats.html'" data-i18n="teach_threats_btn">Изучить угрозы</button>
+                    <button class="btn btn-outline" onclick="requireAuthAndGo('threats.html')" data-i18n="teach_threats_btn">Изучить угрозы</button>
                 </div>
                 <div class="teach-card">
                     <div class="teach-icon">
@@ -148,7 +148,7 @@
                         <li data-i18n="teach_skills_3">Защита личных данных</li>
                         <li data-i18n="teach_skills_4">Безопасный интернет-серфинг</li>
                     </ul>
-                    <button class="btn btn-outline" onclick="window.location.href='learning.html'" data-i18n="teach_skills_btn">Практиковаться</button>
+                    <button class="btn btn-outline" onclick="requireAuthAndGo('learning.html')" data-i18n="teach_skills_btn">Практиковаться</button>
                 </div>
                 <div class="teach-card">
                     <div class="teach-icon">
@@ -161,7 +161,7 @@
                         <li data-i18n="teach_tips_3">Как распознать опасность</li>
                         <li data-i18n="teach_tips_4">Реагирование на инциденты</li>
                     </ul>
-                    <button class="btn btn-outline" onclick="window.location.href='tips.html'" data-i18n="teach_tips_btn">Смотреть советы</button>
+                    <button class="btn btn-outline" onclick="requireAuthAndGo('tips.html')" data-i18n="teach_tips_btn">Смотреть советы</button>
                 </div>
             </div>
         </section>
@@ -234,9 +234,9 @@
             <div class="footer-section">
                 <h4 data-i18n="footer_quick_links">Быстрые ссылки</h4>
                 <ul>
-                    <li><a href="threats.html" data-i18n="nav_threats">Угрозы</a></li>
-                    <li><a href="learning.html" data-i18n="nav_learning">Обучение</a></li>
-                    <li><a href="tips.html" data-i18n="nav_tips">Советы</a></li>
+                    <li><a href="javascript:void(0)" onclick="requireAuthAndGo('threats.html')" data-i18n="nav_threats">Угрозы</a></li>
+                    <li><a href="javascript:void(0)" onclick="requireAuthAndGo('learning.html')" data-i18n="nav_learning">Обучение</a></li>
+                    <li><a href="javascript:void(0)" onclick="requireAuthAndGo('tips.html')" data-i18n="nav_tips">Советы</a></li>
                 </ul>
             </div>
             <div class="footer-section">
