@@ -658,6 +658,8 @@ requestAnimationFrame(raf);
 (function initProfilePage() {
     const fullNameElement = document.getElementById('profile-full-name');
     const emailElement = document.getElementById('profile-email');
+    const lastResultElement = document.getElementById('profile-last-result');
+    const bestResultElement = document.getElementById('profile-best-result');
     if (!fullNameElement || !emailElement) return;
 
     const token = localStorage.getItem('cyberaware_token');
@@ -691,5 +693,32 @@ requestAnimationFrame(raf);
             localStorage.removeItem('cyberaware_token');
             localStorage.removeItem('cyberaware_profile');
             window.location.href = 'auth.html';
+        });
+
+    if (!lastResultElement || !bestResultElement) return;
+
+    fetch('/api/auth/test-results', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+        .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) throw new Error('Results unavailable');
+
+            const latest = data.latest;
+            const best = data.best;
+
+            lastResultElement.textContent = latest
+                ? `${latest.score}/${latest.total_questions}`
+                : 'Нет данных';
+
+            bestResultElement.textContent = best
+                ? `${best.score}/${best.total_questions}`
+                : 'Нет данных';
+        })
+        .catch(() => {
+            lastResultElement.textContent = 'Ошибка загрузки';
+            bestResultElement.textContent = 'Ошибка загрузки';
         });
 })();

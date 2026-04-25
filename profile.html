@@ -70,6 +70,41 @@
             color: #0f172a;
             font-weight: 600;
         }
+
+        .results-block {
+            margin-top: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            padding: 1rem;
+        }
+
+        .results-block h3 {
+            margin: 0 0 0.75rem;
+            font-size: 1rem;
+            color: #0f172a;
+        }
+
+        .results-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .results-row:last-child {
+            border-bottom: none;
+        }
+
+        .results-label {
+            color: #64748b;
+        }
+
+        .results-value {
+            color: #0f172a;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -121,6 +156,18 @@
                 <div class="profile-item">
                     <h4 data-i18n="profile_level">Уровень</h4>
                     <p data-i18n="profile_level_beginner">Начальный</p>
+                </div>
+            </div>
+
+            <div class="results-block">
+                <h3>Мои результаты</h3>
+                <div class="results-row">
+                    <span class="results-label">Последний результат</span>
+                    <span class="results-value" id="profile-last-result">Нет данных</span>
+                </div>
+                <div class="results-row">
+                    <span class="results-label">Лучший результат</span>
+                    <span class="results-value" id="profile-best-result">Нет данных</span>
                 </div>
             </div>
         </section>

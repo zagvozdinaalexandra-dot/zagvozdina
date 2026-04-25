@@ -16,6 +16,10 @@ function getTokenFromHeader(req) {
   return authHeader.slice('Bearer '.length).trim();
 }
 
+function verifyToken(token) {
+  return jwt.verify(token, process.env.JWT_SECRET);
+}
+
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
@@ -154,7 +158,7 @@ router.get('/me', async (req, res) => {
 
     let payload;
     try {
-      payload = jwt.verify(token, process.env.JWT_SECRET);
+      payload = verifyToken(token);
     } catch (tokenError) {
       return res.status(401).json({ message: 'Invalid or expired token' });
     }
@@ -184,6 +188,103 @@ router.get('/me', async (req, res) => {
     });
   } catch (error) {
     console.error('Profile fetch error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// POST /api/auth/test-results
+router.post('/test-results', async (req, res) => {
+  try {
+    const token = getTokenFromHeader(req);
+    if (!token) {
+      return res.status(401).json({ message: 'Authorization token is missing' });
+    }
+
+    let payload;
+    try {
+      payload = verifyToken(token);
+    } catch (tokenError) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+    const { score, totalQuestions } = req.body;
+    if (!Number.isInteger(score) || !Number.isInteger(totalQuestions)) {
+      return res.status(400).json({ message: 'Score and totalQuestions must be integers' });
+    }
+
+    if (totalQuestions <= 0 || score < 0 || score > totalQuestions) {
+      return res.status(400).json({ message: 'Invalid score values' });
+    }
+
+    const { data: savedResult, error: saveError } = await supabase
+      .from('test_results')
+      .insert({
+        user_id: payload.sub,
+        score,
+        total_questions: totalQuestions,
+      })
+      .select('id, score, total_questions, created_at')
+      .single();
+
+    if (saveError) {
+      console.error('Supabase save test result error:', saveError);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    return res.status(201).json({ result: savedResult });
+  } catch (error) {
+    console.error('Save test result error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// GET /api/auth/test-results
+router.get('/test-results', async (req, res) => {
+  try {
+    const token = getTokenFromHeader(req);
+    if (!token) {
+      return res.status(401).json({ message: 'Authorization token is missing' });
+    }
+
+    let payload;
+    try {
+      payload = verifyToken(token);
+    } catch (tokenError) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+    const { data: latest, error: latestError } = await supabase
+      .from('test_results')
+      .select('id, score, total_questions, created_at')
+      .eq('user_id', payload.sub)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (latestError) {
+      console.error('Supabase latest result lookup error:', latestError);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    const { data: bestRows, error: bestError } = await supabase
+      .from('test_results')
+      .select('id, score, total_questions, created_at')
+      .eq('user_id', payload.sub)
+      .order('score', { ascending: false })
+      .order('created_at', { ascending: true })
+      .limit(1);
+
+    if (bestError) {
+      console.error('Supabase best result lookup error:', bestError);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    return res.status(200).json({
+      latest: latest || null,
+      best: bestRows?.[0] || null,
+    });
+  } catch (error) {
+    console.error('Get test results error:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });

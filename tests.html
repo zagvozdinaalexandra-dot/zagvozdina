@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование - CyberAware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="guides.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .test-wrapper {
+            max-width: 980px;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem;
+        }
+
+        .test-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+            padding: 1.5rem;
+        }
+
+        .test-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .test-question {
+            margin: 0 0 1rem;
+            color: #0f172a;
+            font-size: 1.2rem;
+        }
+
+        .options-list {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .option-item {
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            transition: 0.2s ease;
+            cursor: pointer;
+        }
+
+        .option-item:hover {
+            border-color: rgba(0, 168, 255, 0.45);
+            background: rgba(0, 168, 255, 0.06);
+        }
+
+        .test-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .result-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #166534;
+            font-weight: 700;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .test-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <i class="fas fa-shield-alt"></i> CyberAware
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </div>
+                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </div>
+            </div>
+            <a href="auth.html" class="btn btn-secondary" data-i18n="btn_login">Вход</a>
+            <a href="auth.html" class="btn btn-primary" data-i18n="btn_register">Регистрация</a>
+        </div>
+    </header>
+
+    <main class="test-wrapper">
+        <section class="test-card">
+            <div class="test-meta">
+                <span id="test-progress">Вопрос 1 из 50</span>
+                <span id="test-answered">Отвечено: 0/50</span>
+            </div>
+            <h1 class="test-question" id="test-question-text"></h1>
+            <div class="options-list" id="test-options"></div>
+
+            <div class="test-actions">
+                <button class="btn btn-secondary" id="prev-question-btn" type="button">Назад</button>
+                <button class="btn btn-primary" id="next-question-btn" type="button">Далее</button>
+                <button class="btn btn-primary" id="finish-test-btn" type="button">Завершить тест</button>
+            </div>
+            <div class="result-box" id="test-result-box"></div>
+        </section>
+    </main>
+
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const testQuestions = [
+            { q: 'Что означает аббревиатура VPN?', a: ['Virtual Private Network', 'Verified Public Network', 'Visual Proxy Node', 'Variable Private Number'], c: 0 },
+            { q: 'Какой пароль считается самым надежным?', a: ['12345678', 'qwerty2024', 'P@ssw0rd!', 'T!me_8R!dge$Sun2026'], c: 3 },
+            { q: 'Для чего нужна 2FA?', a: ['Ускорить интернет', 'Добавить второй фактор входа', 'Скрыть IP навсегда', 'Удалять вирусы'], c: 1 },
+            { q: 'Фишинг чаще всего приходит через:', a: ['BIOS', 'Email или сообщения', 'Bluetooth наушники', 'USB-кабель'], c: 1 },
+            { q: 'Какой протокол безопаснее для сайта?', a: ['HTTP', 'FTP', 'HTTPS', 'TELNET'], c: 2 },
+            { q: 'Что такое malware?', a: ['Безопасное ПО', 'Вредоносное ПО', 'Драйвер принтера', 'Архиватор'], c: 1 },
+            { q: 'Что лучше делать с подозрительным вложением?', a: ['Открыть сразу', 'Переслать друзьям', 'Удалить/проверить', 'Скачать на телефон'], c: 2 },
+            { q: 'Основная цель социальной инженерии:', a: ['Ускорить CPU', 'Обманом получить данные', 'Сжать файлы', 'Синхронизировать часы'], c: 1 },
+            { q: 'Что такое brute force атака?', a: ['Атака через USB', 'Перебор паролей', 'Сброс роутера', 'Смена DNS'], c: 1 },
+            { q: 'Как защититься от утечки пароля?', a: ['Один пароль везде', 'Менеджер паролей', 'Пароль в заметках', 'Пароль на стикере'], c: 1 },
+            { q: 'Что делать при потере телефона?', a: ['Ничего', 'Сразу блокировать аккаунты и SIM', 'Выключить Wi-Fi дома', 'Удалить браузер'], c: 1 },
+            { q: 'Что такое ransomware?', a: ['Шифровальщик-вымогатель', 'Антивирус', 'Firewall', 'VPN сервис'], c: 0 },
+            { q: 'Почему важно обновлять ОС?', a: ['Для новых обоев', 'Для закрытия уязвимостей', 'Для громкости звука', 'Для смены языка'], c: 1 },
+            { q: 'Какой из вариантов — пример фишинга?', a: ['Письмо "Срочно подтвердите пароль"', 'Официальный счет в кабинете', 'Сообщение от знакомого вживую', 'СМС от друга без ссылок'], c: 0 },
+            { q: 'Что такое firewall?', a: ['Брандмауэр', 'Видеокарта', 'Тип SSD', 'Язык программирования'], c: 0 },
+            { q: 'Зачем проверять URL перед входом?', a: ['Чтобы сайт был красивым', 'Чтобы избежать поддельного домена', 'Чтобы ускорить логин', 'Чтобы уменьшить шрифт'], c: 1 },
+            { q: 'Опасность публичного Wi-Fi:', a: ['Невозможно отправить фото', 'Перехват трафика', 'Сломается батарея', 'Не работает браузер'], c: 1 },
+            { q: 'Что лучше для 2FA?', a: ['SMS всегда лучший', 'Приложение-аутентификатор/ключ', 'Пароль на бумаге', 'Отключенная 2FA'], c: 1 },
+            { q: 'Какой файл наиболее подозрителен в письме?', a: ['invoice.pdf.exe', 'photo.jpg', 'notes.txt', 'manual.pdf'], c: 0 },
+            { q: 'Что такое SQL Injection?', a: ['Ошибка мышки', 'Инъекция SQL-запроса', 'Сжатие изображений', 'Сканирование порта'], c: 1 },
+            { q: 'Что означает принцип Least Privilege?', a: ['Максимум прав всем', 'Минимально необходимые права', 'Права только админу', 'Запрет на интернет'], c: 1 },
+            { q: 'Что делать с одинаковыми паролями на сайтах?', a: ['Оставить как есть', 'Заменить на уникальные', 'Поделиться с коллегой', 'Записать в чате'], c: 1 },
+            { q: 'Для чего нужен backup?', a: ['Для иконок', 'Для восстановления данных', 'Для ускорения RAM', 'Для браузерных вкладок'], c: 1 },
+            { q: 'Что такое DDoS?', a: ['Массовая атака на доступность', 'Тип шифрования', 'Протокол почты', 'Формат видео'], c: 0 },
+            { q: 'Что опасно публиковать в соцсетях?', a: ['Мемы', 'Фото документов', 'Музыку', 'Погоду'], c: 1 },
+            { q: 'Если пришел код 2FA, который вы не запрашивали:', a: ['Ввести куда просят', 'Игнорировать и сменить пароль', 'Отправить в чат', 'Удалить телефон'], c: 1 },
+            { q: 'Что такое MITM?', a: ['Атака "человек посередине"', 'Новая ОС', 'Тип роутера', 'Облачный диск'], c: 0 },
+            { q: 'Какая практика безопаснее?', a: ['Автосохранение паролей в любом ПК', 'Выход из аккаунта на чужом устройстве', 'Отключить пин-код', 'Открывать все ссылки'], c: 1 },
+            { q: 'Что такое token в веб-авторизации?', a: ['Цвет темы', 'Маркер подтверждения сессии', 'Иконка профиля', 'Тип браузера'], c: 1 },
+            { q: 'Почему нельзя хранить секретные ключи в Git?', a: ['Файл станет больше', 'Ключи могут утечь', 'Упадет FPS', 'Не запустится CSS'], c: 1 },
+            { q: 'Что лучше при создании пароля?', a: ['Дата рождения', 'Длинная случайная фраза', 'Имя питомца', 'Номер телефона'], c: 1 },
+            { q: 'Признак поддельного домена:', a: ['google.com', 'g00gle-security.com', 'github.com', 'wikipedia.org'], c: 1 },
+            { q: 'Что такое шифрование?', a: ['Удаление данных', 'Преобразование данных для защиты', 'Архивация изображений', 'Установка драйвера'], c: 1 },
+            { q: 'Как лучше отправлять важные пароли?', a: ['В открытом чате', 'Никак, использовать менеджер/секреты', 'В комментарии к задаче', 'В имени файла'], c: 1 },
+            { q: 'Что такое endpoint security?', a: ['Защита конечных устройств', 'Только VPN', 'Только антивирус почты', 'Только DNS'], c: 0 },
+            { q: 'Если браузер предупреждает о сертификате:', a: ['Игнорировать всегда', 'Проверить сайт и не продолжать при риске', 'Выключить интернет', 'Перезагрузить ПК'], c: 1 },
+            { q: 'Какая почта безопаснее для логина?', a: ['Общая почта команды', 'Личная защищенная почта с 2FA', 'Временная почта', 'Случайная почта друга'], c: 1 },
+            { q: 'Что делать при подозрении на взлом аккаунта?', a: ['Подождать', 'Сменить пароль и завершить сессии', 'Удалить cookies только', 'Поменять обои'], c: 1 },
+            { q: 'Какая атака связана с подменой DNS?', a: ['DNS spoofing', 'Bluejacking', 'Wardriving', 'Clickjacking only'], c: 0 },
+            { q: 'Почему важен принцип "Zero Trust"?', a: ['Не доверять никому без проверки', 'Отключить всех пользователей', 'Запретить VPN', 'Удалить логи'], c: 0 },
+            { q: 'Что нужно сделать перед продажей ноутбука?', a: ['Удалить один файл', 'Полный сброс/стирание данных', 'Просто выйти из браузера', 'Переименовать пользователя'], c: 1 },
+            { q: 'Что из этого относится к персональным данным?', a: ['IP и email', 'Только цвет темы', 'Только язык интерфейса', 'Только версия браузера'], c: 0 },
+            { q: 'Признак хорошей политики паролей:', a: ['Минимум 4 символа', 'Уникальные и длинные пароли', 'Одинаковые для отдела', 'Без спецсимволов'], c: 1 },
+            { q: 'Что такое CVE?', a: ['Реестр известных уязвимостей', 'Модель видеокарты', 'Протокол VPN', 'Тип базы данных'], c: 0 },
+            { q: 'Как уменьшить риск фишинга в компании?', a: ['Отключить почту', 'Обучение и симуляции фишинга', 'Сменить логотип', 'Удалить браузер'], c: 1 },
+            { q: 'Какой принцип у надежного бэкапа?', a: ['Хранить только одну копию', 'Правило 3-2-1', 'Хранить в той же папке', 'Никогда не тестировать восстановление'], c: 1 },
+            { q: 'Что такое XSS?', a: ['Внедрение скриптов в веб-страницы', 'Тип шифрования Wi-Fi', 'Антивирусная проверка', 'Протокол электронной почты'], c: 0 },
+            { q: 'Почему стоит ограничивать права API-ключей?', a: ['Так быстрее фронтенд', 'Чтобы уменьшить ущерб при утечке', 'Для красивого кода', 'Чтобы отключить логирование'], c: 1 },
+            { q: 'Что важно делать после инцидента безопасности?', a: ['Ничего не менять', 'Провести разбор и устранить причины', 'Удалить историю браузера', 'Отключить сотрудников'], c: 1 },
+            { q: 'Что выбрать для хранения паролей пользователей?', a: ['Plain text', 'bcrypt hash', 'base64 строка', 'Пароль в cookie без защиты'], c: 1 }
+        ];
+
+        const totalQuestions = testQuestions.length;
+        const answers = new Array(totalQuestions).fill(null);
+        let currentIndex = 0;
+
+        const token = localStorage.getItem('cyberaware_token');
+        if (!token) {
+            localStorage.setItem('cyberaware_post_auth_redirect', 'tests.html');
+            window.location.href = 'auth.html';
+        }
+
+        const questionText = document.getElementById('test-question-text');
+        const optionsContainer = document.getElementById('test-options');
+        const progressElement = document.getElementById('test-progress');
+        const answeredElement = document.getElementById('test-answered');
+        const resultBox = document.getElementById('test-result-box');
+        const prevBtn = document.getElementById('prev-question-btn');
+        const nextBtn = document.getElementById('next-question-btn');
+        const finishBtn = document.getElementById('finish-test-btn');
+
+        function updateMeta() {
+            const answeredCount = answers.filter((value) => value !== null).length;
+            progressElement.textContent = `Вопрос ${currentIndex + 1} из ${totalQuestions}`;
+            answeredElement.textContent = `Отвечено: ${answeredCount}/${totalQuestions}`;
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === totalQuestions - 1;
+        }
+
+        function renderQuestion() {
+            const question = testQuestions[currentIndex];
+            questionText.textContent = question.q;
+            optionsContainer.innerHTML = '';
+
+            question.a.forEach((optionText, optionIndex) => {
+                const optionLabel = document.createElement('label');
+                optionLabel.className = 'option-item';
+
+                const optionInput = document.createElement('input');
+                optionInput.type = 'radio';
+                optionInput.name = `question-${currentIndex}`;
+                optionInput.value = optionIndex;
+                optionInput.checked = answers[currentIndex] === optionIndex;
+                optionInput.addEventListener('change', () => {
+                    answers[currentIndex] = optionIndex;
+                    updateMeta();
+                });
+
+                const optionSpan = document.createElement('span');
+                optionSpan.textContent = optionText;
+
+                optionLabel.appendChild(optionInput);
+                optionLabel.appendChild(optionSpan);
+                optionsContainer.appendChild(optionLabel);
+            });
+
+            updateMeta();
+        }
+
+        function calculateScore() {
+            let score = 0;
+            testQuestions.forEach((question, index) => {
+                if (answers[index] === question.c) score += 1;
+            });
+            return score;
+        }
+
+        async function finishTest() {
+            const score = calculateScore();
+            resultBox.style.display = 'block';
+            resultBox.textContent = `Результат: ${score}/${totalQuestions}. Сохраняем в профиль...`;
+
+            try {
+                const response = await fetch('/api/auth/test-results', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ score, totalQuestions }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Save failed');
+                }
+
+                resultBox.textContent = `Готово! Ваш результат: ${score}/${totalQuestions}. Он сохранен в профиле.`;
+            } catch (error) {
+                resultBox.textContent = `Результат: ${score}/${totalQuestions}. Ошибка сохранения, попробуйте снова позже.`;
+            }
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex -= 1;
+                renderQuestion();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < totalQuestions - 1) {
+                currentIndex += 1;
+                renderQuestion();
+            }
+        });
+
+        finishBtn.addEventListener('click', finishTest);
+        renderQuestion();
+    </script>
+</body>
+</html>

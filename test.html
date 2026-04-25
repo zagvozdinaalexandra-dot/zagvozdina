@@ -2,90 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест - CyberAware</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="guides.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        .empty-page {
-            min-height: calc(100vh - 72px);
-            display: grid;
-            place-items: center;
-            padding: 2rem;
-            text-align: center;
-            color: #0f172a;
-        }
-    </style>
+    <meta http-equiv="refresh" content="0; url=tests.html">
+    <title>Redirecting...</title>
 </head>
 <body>
-    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
-
-    <header class="header">
-        <div class="header-left">
-            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
-                <i class="fas fa-shield-alt"></i> CyberAware
-            </div>
-        </div>
-        <div class="header-right">
-            <div class="lang-switcher">
-                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
-                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
-                </div>
-                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
-                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
-                </div>
-            </div>
-            <a href="auth.html" class="btn btn-secondary" data-i18n="btn_login">Вход</a>
-            <a href="auth.html" class="btn btn-primary" data-i18n="btn_register">Регистрация</a>
-        </div>
-    </header>
-
-    <div class="lesson-wrapper">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h3>Навигация</h3>
-                <p>CyberAware</p>
-            </div>
-
-            <ul class="sidebar-nav">
-                <li>
-                    <a href="threats.html">
-                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-                        <span>Угрозы</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="learning.html">
-                        <span class="icon"><i class="fas fa-graduation-cap"></i></span>
-                        <span>Обучение</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="tips.html">
-                        <span class="icon"><i class="fas fa-lightbulb"></i></span>
-                        <span>Советы</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="test.html" class="active">
-                        <span class="icon"><i class="fas fa-clipboard-check"></i></span>
-                        <span>Тест</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
-        <main class="main-content empty-page">
-            <div>
-                <h1>Тест</h1>
-                <p>Страница пока пустая</p>
-            </div>
-        </main>
-    </div>
-
-    <script src="translations.js"></script>
-    <script src="script.js"></script>
+    <script>window.location.replace('tests.html');</script>
 </body>
 </html>
