@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="profile_page_title">Личный кабинет - CyberAware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .profile-page {
+            max-width: 980px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+            padding: 2rem;
+        }
+
+        .profile-head {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(0, 168, 255, 0.12);
+            color: #00a8ff;
+            font-size: 1.6rem;
+        }
+
+        .profile-head h1 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1.6rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .profile-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            padding: 1rem;
+        }
+
+        .profile-item h4 {
+            margin: 0 0 0.35rem;
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+
+        .profile-item p {
+            margin: 0;
+            color: #0f172a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <i class="fas fa-shield-alt"></i> CyberAware
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </div>
+                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </div>
+            </div>
+            <a href="threats.html" class="btn btn-secondary" data-i18n="nav_threats">Угрозы</a>
+            <a href="learning.html" class="btn btn-secondary" data-i18n="nav_learning">Обучение</a>
+            <a href="tips.html" class="btn btn-secondary" data-i18n="nav_tips">Советы</a>
+        </div>
+    </header>
+
+    <main class="profile-page">
+        <section class="profile-card">
+            <div class="profile-head">
+                <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                <div>
+                    <h1 data-i18n="profile_title">Личный кабинет</h1>
+                </div>
+            </div>
+
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <h4 data-i18n="profile_name">Имя</h4>
+                    <p data-i18n="profile_user_display">Пользователь CyberAware</p>
+                </div>
+                <div class="profile-item">
+                    <h4 data-i18n="profile_email">Email</h4>
+                    <p>user@example.com</p>
+                </div>
+                <div class="profile-item">
+                    <h4 data-i18n="profile_status">Статус</h4>
+                    <p data-i18n="profile_status_active">Активный</p>
+                </div>
+                <div class="profile-item">
+                    <h4 data-i18n="profile_level">Уровень</h4>
+                    <p data-i18n="profile_level_beginner">Начальный</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

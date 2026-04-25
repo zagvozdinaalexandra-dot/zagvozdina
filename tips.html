@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="tips_page_title">Советы - CyberAware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="guides.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <i class="fas fa-shield-alt"></i> CyberAware
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </div>
+                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </div>
+            </div>
+            <a href="auth.html" class="btn btn-secondary" data-i18n="btn_login">Вход</a>
+            <a href="auth.html" class="btn btn-primary" data-i18n="btn_register">Регистрация</a>
+            <button class="menu-toggle" type="button" aria-label="Открыть меню" data-drawer-open>
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="profile-drawer-overlay" data-drawer-overlay></div>
+    <aside class="profile-drawer" data-profile-drawer aria-hidden="true">
+        <div class="profile-drawer-head">
+            <h4 data-i18n="drawer_menu">Меню</h4>
+            <button class="profile-drawer-close" type="button" aria-label="Закрыть" data-drawer-close>&times;</button>
+        </div>
+        <a href="profile.html" class="btn btn-primary" data-i18n="drawer_profile">Личный кабинет</a>
+    </aside>
+
+    <div class="lesson-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3 data-i18n="sidebar_navigation">Навигация</h3>
+                <p>CyberAware</p>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="threats.html">
+                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                        <span data-i18n="nav_threats">Угрозы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="learning.html">
+                        <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span data-i18n="nav_learning">Обучение</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tips.html" class="active">
+                        <span class="icon"><i class="fas fa-lightbulb"></i></span>
+                        <span data-i18n="nav_tips">Советы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="test.html">
+                        <span class="icon"><i class="fas fa-clipboard-check"></i></span>
+                        <span data-i18n="nav_test">Тест</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+        <!-- Tips Guide Section -->
+        <section class="guide-section">
+            <div class="section-header">
+                <h2 data-i18n="tips_guide_title">Полный гайд по советам и рекомендациям кибербезопасности</h2>
+                <p data-i18n="tips_guide_subtitle">Практические советы для защиты себя в интернете</p>
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="guide-toc">
+                <h3 data-i18n="tips_toc">Содержание:</h3>
+                <ul data-i18n-html="tips_toc_list">
+                    <li><a href="#passwords">Управление паролями</a></li>
+                    <li><a href="#2fa">Двухфакторная аутентификация</a></li>
+                    <li><a href="#updates">Обновления и патчи</a></li>
+                    <li><a href="#wifi">Безопасность Wi-Fi</a></li>
+                    <li><a href="#social-media">Социальные сети</a></li>
+                    <li><a href="#email">Безопасность email</a></li>
+                    <li><a href="#browser">Безопасность браузера</a></li>
+                    <li><a href="#devices">Безопасность устройств</a></li>
+                    <li><a href="#backup">Резервные копии</a></li>
+                    <li><a href="#emergency">Чрезвычайная ситуация</a></li>
+                </ul>
+            </div>
+
+            <div data-i18n-html="tips_sections_html">
+            <!-- Section 1: Passwords -->
+            <div id="passwords" class="guide-subsection">
+                <h3><i class="fas fa-key"></i> Управление паролями</h3>
+                <p>Правильное управление паролями - это первая линия защиты вашего аккаунта.</p>
+                
+                <h4>Правила для создания надежного пароля:</h4>
+                <div class="tips-checklist">
+                    <div class="checklist-item">
+                        <span class="check-number">1</span>
+                        <div>
+                            <h5>Длина: минимум 12-16 символов</h5>
+                            <p>Чем длиннее пароль, тем сложнее его взломать. Каждый дополнительный символ экспоненциально увеличивает время взлома.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">2</span>
+                        <div>
+                            <h5>Разнообразие символов</h5>
+                            <p>Используйте: прописные буквы (A-Z), строчные буквы (a-z), цифры (0-9) и специальные символы (!@#$%^&*)</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">3</span>
+                        <div>
+                            <h5>Избегайте личной информации</h5>
+                            <p>Не используйте дни рождения, имена родственников, адреса или другую информацию, которую легко угадать.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">4</span>
+                        <div>
+                            <h5>Уникальность для каждого сайта</h5>
+                            <p>Используйте разные пароли для разных сервисов. Если один сервис взломают, остальные останутся защищены.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">5</span>
+                        <div>
+                            <h5>Используйте менеджер паролей</h5>
+                            <p>Программы как Bitwarden, 1Password, LastPass хранят все пароли в зашифрованном виде и автоматически заполняют их.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Примеры паролей:</h4>
+                <div class="example-comparison">
+                    <div class="bad-example">
+                        <h5>❌ Плохие пароли:</h5>
+                        <ul>
+                            <li>123456</li>
+                            <li>password</li>
+                            <li>qwerty</li>
+                            <li>admin123</li>
+                            <li>1234567890</li>
+                        </ul>
+                    </div>
+                    <div class="good-example">
+                        <h5>✓ Хорошие пароли:</h5>
+                        <ul>
+                            <li>Tr0pic@l!Sun$et2024</li>
+                            <li>MyC@t&3Dog$Are&Lazy</li>
+                            <li>P@ssw0rd!Rock#Music2024</li>
+                            <li>Secure#Pass99@Mix&Random</li>
+                            <li>Blu3$ky@Fl0ating&Cloud2024</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4>Что нельзя делать с паролями:</h4>
+                <ul class="dos-donts">
+                    <li>❌ Не записывайте пароли на бумаге или стикерах</li>
+                    <li>❌ Не делитесь паролями с кем-либо</li>
+                    <li>❌ Не вводите пароли на чужих компьютерах</li>
+                    <li>❌ Не используйте одинаковые пароли для разных сайтов</li>
+                    <li>❌ Не отправляйте пароли по email</li>
+                    <li>❌ Не сохраняйте пароли в текстовых файлах</li>
+                </ul>
+            </div>
+
+            <!-- Section 2: 2FA -->
+            <div id="2fa" class="guide-subsection">
+                <h3><i class="fas fa-shield-alt"></i> Двухфакторная аутентификация (2FA)</h3>
+                <p>2FA добавляет второй уровень защиты - даже если кто-то узнает ваш пароль, он не сможет войти без второго фактора.</p>
+                
+                <h4>Типы 2FA:</h4>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h5>SMS коды</h5>
+                        <p>Код отправляется на ваш телефон. Это самый распространенный метод, но менее надежен, чем приложения.</p>
+                        <p><strong>Плюсы:</strong> Просто, не требует приложения<br>
+                        <strong>Минусы:</strong> Уязвим к перехвату SIM-карт</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Приложения (Google Authenticator, Authy)</h5>
+                        <p>Временные коды генерируются приложением на вашем телефоне каждые 30 секунд.</p>
+                        <p><strong>Плюсы:</strong> Более безопасно, работает офлайн<br>
+                        <strong>Минусы:</strong> Требует установки приложения</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Аппаратные ключи</h5>
+                        <p>Физические устройства (YubiKey) для подтверждения личности. Самый надежный метод.</p>
+                        <p><strong>Плюсы:</strong> Максимальная безопасность<br>
+                        <strong>Минусы:</strong> Требует покупки, может потеряться</p>
+                    </div>
+                </div>
+
+                <h4>Как включить 2FA:</h4>
+                <ol class="process-list">
+                    <li>Перейдите в настройки безопасности вашего аккаунта</li>
+                    <li>Найдите опцию "Двухэтапная проверка" или "2FA"</li>
+                    <li>Выберите метод (SMS, приложение, ключ)</li>
+                    <li>Следуйте инструкциям для настройки</li>
+                    <li>Сохраните резервные коды в безопасном месте</li>
+                </ol>
+
+                <h4>Платформы с хорошей поддержкой 2FA:</h4>
+                <ul class="protection-list">
+                    <li>✓ Google (gmail.com)</li>
+                    <li>✓ Microsoft (outlook.com)</li>
+                    <li>✓ Facebook</li>
+                    <li>✓ Instagram</li>
+                    <li>✓ Twitter</li>
+                    <li>✓ GitHub</li>
+                    <li>✓ Dropbox</li>
+                    <li>✓ Apple</li>
+                </ul>
+            </div>
+
+            <!-- Section 3: Updates -->
+            <div id="updates" class="guide-subsection">
+                <h3><i class="fas fa-sync-alt"></i> Обновления и патчи</h3>
+                <p>Обновления закрывают уязвимости, которые использует вредонос. Всегда обновляйте вашу систему!</p>
+                
+                <h4>Что нужно обновлять:</h4>
+                <div class="update-list">
+                    <div class="update-item">
+                        <h5>Операционная система</h5>
+                        <p>Windows, macOS, Linux - обновляйте автоматически. Перезагружайтесь, когда требуется.</p>
+                        <p><strong>Как проверить:</strong> Параметры → Обновление и безопасность</p>
+                    </div>
+                    <div class="update-item">
+                        <h5>Браузер</h5>
+                        <p>Chrome, Firefox, Safari, Edge - обновляются автоматически, но проверяйте версию.</p>
+                        <p><strong>Как проверить:</strong> Меню → О программе → Браузер</p>
+                    </div>
+                    <div class="update-item">
+                        <h5>Приложения</h5>
+                        <p>Все установленные программы должны быть обновлены. Включите автоматические обновления.</p>
+                        <p><strong>Как проверить:</strong> Проверка обновлений в приложении</p>
+                    </div>
+                    <div class="update-item">
+                        <h5>Плагины и расширения</h5>
+                        <p>Flash, Java, и расширения браузера часто содержат уязвимости. Обновляйте или удаляйте.</p>
+                        <p><strong>Рекомендация:</strong> Отключите Flash - он больше не используется</p>
+                    </div>
+                </div>
+
+                <h4>Лучшие практики:</h4>
+                <ul class="protection-list">
+                    <li>✓ Включите автоматические обновления для всех систем</li>
+                    <li>✓ Перезагружайте компьютер после обновлений</li>
+                    <li>✓ Не откладывайте критические обновления</li>
+                    <li>✓ Проверяйте наличие обновлений еженедельно</li>
+                    <li>✓ Используйте сайт "Have I Been Pwned?" для проверки взломов</li>
+                </ul>
+            </div>
+
+            <!-- Section 4: WiFi -->
+            <div id="wifi" class="guide-subsection">
+                <h3><i class="fas fa-wifi"></i> Безопасность Wi-Fi</h3>
+                <p>Открытые Wi-Fi сети подвергают вас риску атак типа "Man in the Middle" и кражи данных.</p>
+                
+                <h4>Безопасность дома Wi-Fi:</h4>
+                <div class="tips-checklist">
+                    <div class="checklist-item">
+                        <span class="check-number">1</span>
+                        <div>
+                            <h5>Измените пароль маршрутизатора</h5>
+                            <p>Используйте пароль по умолчанию (admin/admin) только для входа в панель администратора. Измените пароль Wi-Fi на надежный.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">2</span>
+                        <div>
+                            <h5>Используйте WPA3 (или WPA2) шифрование</h5>
+                            <p>Перейдите в настройки маршрутизатора и убедитесь, что используется WPA3 или хотя бы WPA2. Никогда не используйте WEP!</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">3</span>
+                        <div>
+                            <h5>Скройте SSID (опционально)</h5>
+                            <p>Отключите трансляцию имени сети. Это усложнит найти вашу сеть, но не принципиально.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">4</span>
+                        <div>
+                            <h5>Обновите прошивку маршрутизатора</h5>
+                            <p>Регулярно проверяйте и устанавливайте обновления для маршрутизатора через его панель администратора.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Что НЕ делайте на публичных Wi-Fi:</h4>
+                <ul class="dos-donts">
+                    <li>❌ Не заходите в банк или платежные системы</li>
+                    <li>❌ Не вводите пароли</li>
+                    <li>❌ Не совершайте покупки</li>
+                    <li>❌ Не передавайте личные данные</li>
+                    <li>❌ Не подключайтесь к неизвестным сетям</li>
+                </ul>
+
+                <h4>Как защитить себя на публичном Wi-Fi:</h4>
+                <ul class="protection-list">
+                    <li>✓ Используйте VPN (Virtual Private Network)</li>
+                    <li>✓ Отключите общий доступ к файлам</li>
+                    <li>✓ Используйте только HTTPS сайты (замок в адресной строке)</li>
+                    <li>✓ Отключите Bluetooth и общее подключение</li>
+                    <li>✓ Используйте мобильный интернет вместо Wi-Fi для важных операций</li>
+                </ul>
+            </div>
+
+            <!-- Section 5: Social Media -->
+            <div id="social-media" class="guide-subsection">
+                <h3><i class="fas fa-share-alt"></i> Безопасность в социальных сетях</h3>
+                <p>Социальные сети часто используются для сбора информации о вас. Будьте осторожны с тем, что вы делитесь.</p>
+                
+                <h4>Что нельзя публиковать в соцсетях:</h4>
+                <ul class="dos-donts">
+                    <li>❌ Дата рождения</li>
+                    <li>❌ Место работы и должность</li>
+                    <li>❌ Адрес дома</li>
+                    <li>❌ Номер телефона</li>
+                    <li>❌ Информация о своих путешествиях</li>
+                    <li>❌ Фотографии документов (паспорт, права)</li>
+                    <li>❌ Номера кредитных карт или счетов</li>
+                </ul>
+
+                <h4>Настройки приватности для каждой платформы:</h4>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h5>Facebook</h5>
+                        <p>Параметры → Приватность → Контролируйте кто может видеть ваши посты (только друзья)</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Instagram</h5>
+                        <p>Профиль → Параметры → Приватность → Сделайте аккаунт приватным</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Twitter</h5>
+                        <p>Параметры → Приватность и безопасность → Контролируйте видимость твитов</p>
+                    </div>
+                </div>
+
+                <h4>Лучшие практики:</h4>
+                <ul class="protection-list">
+                    <li>✓ Используйте разные пароли для каждой платформы</li>
+                    <li>✓ Включите 2FA на всех аккаунтах</li>
+                    <li>✓ Регулярно проверяйте активность в истории входов</li>
+                    <li>✓ Будьте осторожны с запросами в друзья от незнакомцев</li>
+                    <li>✓ Не кликайте на подозрительные ссылки в сообщениях</li>
+                    <li>✓ Удаляйте неиспользуемые аккаунты</li>
+                </ul>
+            </div>
+
+            <!-- Section 6: Email -->
+            <div id="email" class="guide-subsection">
+                <h3><i class="fas fa-envelope"></i> Безопасность Email</h3>
+                <p>Email - это ключ ко всем вашим аккаунтам. Защитите его хорошо!</p>
+                
+                <h4>Как защитить почтовый ящик:</h4>
+                <div class="tips-checklist">
+                    <div class="checklist-item">
+                        <span class="check-number">1</span>
+                        <div>
+                            <h5>Используйте надежный пароль</h5>
+                            <p>Это первая защита вашего email. Используйте все правила из раздела "Управление паролями".</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">2</span>
+                        <div>
+                            <h5>Включите 2FA обязательно</h5>
+                            <p>Это критически важно! Даже если кто-то угадает пароль, без второго фактора не сможет войти.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">3</span>
+                        <div>
+                            <h5>Проверяйте историю входов</h5>
+                            <p>Регулярно смотрите, где был вход в ваш аккаунт. Удаляйте неизвестные сессии.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">4</span>
+                        <div>
+                            <h5>Используйте recovery-опции</h5>
+                            <p>Добавьте резервный email и номер телефона для восстановления доступа.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Как распознать фишинговое письмо:</h4>
+                <ul class="protection-list">
+                    <li>⚠ Проверьте email адрес отправителя - часто в нем есть опечатки</li>
+                    <li>⚠ Сообщения просят "срочно" обновить пароль или данные</li>
+                    <li>⚠ Ссылки указывают на неправильный адрес (наведите мышь, чтобы проверить)</li>
+                    <li>⚠ Грамматические ошибки и странный тон</li>
+                    <li>⚠ Требуют ввести пароль или данные карты</li>
+                    <li>⚠ Вложения с необычным расширением (.exe, .zip)</li>
+                </ul>
+
+                <h4>Что делать, если получили фишинг:</h4>
+                <ul class="protection-list">
+                    <li>✓ НЕ кликайте на ссылки или не открывайте вложения</li>
+                    <li>✓ Отметьте письмо как спам</li>
+                    <li>✓ Удалите письмо</li>
+                    <li>✓ Если это было от якобы вашего банка - свяжитесь с ними напрямую</li>
+                    <li>✓ Сообщите о фишинге провайдеру email</li>
+                </ul>
+            </div>
+
+            <!-- Section 7: Browser -->
+            <div id="browser" class="guide-subsection">
+                <h3><i class="fas fa-globe"></i> Безопасность браузера</h3>
+                <p>Браузер - это врата в интернет. Используйте его безопасно.</p>
+                
+                <h4>Рекомендуемые браузеры:</h4>
+                <div class="browser-list">
+                    <div class="browser-item">
+                        <h5>✓ Firefox</h5>
+                        <p>Отличная приватность, открытый исходный код, хорошие параметры конфиденциальности по умолчанию.</p>
+                    </div>
+                    <div class="browser-item">
+                        <h5>✓ Chrome</h5>
+                        <p>Быстрый, частые обновления безопасности, хорошая защита от вредоноса. Требует аккаунта Google.</p>
+                    </div>
+                    <div class="browser-item">
+                        <h5>✓ Safari (для Mac/iOS)</h5>
+                        <p>Хорошая интеграция с экосистемой Apple, быстрый, приватный.</p>
+                    </div>
+                </div>
+
+                <h4>Расширения для безопасности:</h4>
+                <ul class="protection-list">
+                    <li>✓ uBlock Origin - блокирует рекламу и отслеживание</li>
+                    <li>✓ Privacy Badger - защита от отслеживания</li>
+                    <li>✓ HTTPS Everywhere - форсирует использование HTTPS</li>
+                    <li>✓ Bitwarden - менеджер паролей</li>
+                    <li>✓ LastPass - менеджер паролей</li>
+                </ul>
+
+                <h4>Настройки браузера для защиты:</h4>
+                <ul class="protection-list">
+                    <li>✓ Включите защиту от отслеживания</li>
+                    <li>✓ Очищайте кэш и cookies при закрытии браузера</li>
+                    <li>✓ Не сохраняйте пароли в браузере - используйте менеджер</li>
+                    <li>✓ Включите предупреждения о поддельных сайтах</li>
+                    <li>✓ Отключите Flash и Java</li>
+                    <li>✓ Используйте режим приватного окна для конфиденциальных операций</li>
+                </ul>
+            </div>
+
+            <!-- Section 8: Devices -->
+            <div id="devices" class="guide-subsection">
+                <h3><i class="fas fa-laptop"></i> Безопасность устройств</h3>
+                <p>Защитите все ваши устройства - компьютер, смартфон, планшет.</p>
+                
+                <h4>Для всех устройств:</h4>
+                <div class="tips-checklist">
+                    <div class="checklist-item">
+                        <span class="check-number">1</span>
+                        <div>
+                            <h5>Установите антивирусное ПО</h5>
+                            <p>Windows: Microsoft Defender (встроено), Kaspersky, Avast<br>
+                            Mac: ClamXav (антивирус), Malwarebytes<br>
+                            Linux: ClamAV, Chkrootkit</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">2</span>
+                        <div>
+                            <h5>Используйте брандмауэр</h5>
+                            <p>Windows: Windows Defender Firewall (встроено)<br>
+                            Mac: System Preferences → Security & Privacy → Firewall<br>
+                            Linux: UFW, Firewalld</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">3</span>
+                        <div>
+                            <h5>Установите пароль на устройство</h5>
+                            <p>Никогда не используйте стандартный пароль или пустой пароль. Это физическая защита.</p>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-number">4</span>
+                        <div>
+                            <h5>Включите шифрование диска</h5>
+                            <p>Windows: BitLocker<br>
+                            Mac: FileVault<br>
+                            Linux: LUKS</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Для смартфонов и планшетов:</h4>
+                <ul class="protection-list">
+                    <li>✓ Используйте PIN или биометрию вместо паттерна</li>
+                    <li>✓ Установите только приложения из официальных магазинов (Google Play, App Store)</li>
+                    <li>✓ Проверяйте разрешения приложений</li>
+                    <li>✓ Регулярно обновляйте ОС и приложения</li>
+                    <li>✓ Используйте VPN на мобильных сетях</li>
+                    <li>✓ Включите найти мой телефон / Find My iPhone</li>
+                </ul>
+
+                <h4>Что делать, если устройство потеряно:</h4>
+                <ol class="process-list">
+                    <li>Использован сервис "Найти мой телефон" для локации</li>
+                    <li>Если не найдено - удалите данные удаленно</li>
+                    <li>Измените пароли всех аккаунтов</li>
+                    <li>Свяжитесь с оператором для блокировки SIM</li>
+                    <li>Подайте заявку на блокировку устройства (IMEI)</li>
+                </ol>
+            </div>
+
+            <!-- Section 9: Backup -->
+            <div id="backup" class="guide-subsection">
+                <h3><i class="fas fa-save"></i> Резервные копии</h3>
+                <p>Резервные копии защитят вас от потери данных при атаке ransomware или аварии устройства.</p>
+                
+                <h4>Правила резервного копирования:</h4>
+                <div class="backup-rules">
+                    <div class="rule">
+                        <h5>Правило 3-2-1</h5>
+                        <p><strong>3 копии</strong> - исходный файл + 2 резервные<br>
+                        <strong>2 разных носителя</strong> - внешний диск + облако<br>
+                        <strong>1 копия вне дома</strong> - в облаке или у друга</p>
+                    </div>
+                </div>
+
+                <h4>Варианты резервного копирования:</h4>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h5>Внешний жесткий диск</h5>
+                        <p>Быстро, большой объем, но физический носитель может выйти из строя.</p>
+                        <p><strong>Инструменты:</strong> Windows Backup, Time Machine (Mac)</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Облачное хранилище</h5>
+                        <p>Автоматическое копирование, доступ отовсюду, но требует интернета.</p>
+                        <p><strong>Сервисы:</strong> Google Drive, OneDrive, iCloud, Dropbox</p>
+                    </div>
+                    <div class="info-card">
+                        <h5>Комбинированный подход</h5>
+                        <p>Лучший вариант - используйте оба метода. Одна резервная копия в облаке, вторая на диске.</p>
+                        <p><strong>Инструменты:</strong> Duplicati, Backblaze</p>
+                    </div>
+                </div>
+
+                <h4>Как проверить резервную копию:</h4>
+                <ul class="protection-list">
+                    <li>✓ Хотя бы раз в месяц восстанавливайте файл из резервной копии</li>
+                    <li>✓ Убедитесь, что облако синхронизируется в реальном времени</li>
+                    <li>✓ Проверьте, что достаточно места для новых файлов</li>
+                    <li>✓ Ведите список того, что входит в резервную копию</li>
+                </ul>
+            </div>
+
+            <!-- Section 10: Emergency -->
+            <div id="emergency" class="guide-subsection">
+                <h3><i class="fas fa-exclamation-triangle"></i> Что делать в чрезвычайной ситуации</h3>
+                <p>Если что-то случилось - действуйте быстро!</p>
+                
+                <h4>Если ваш аккаунт взломан:</h4>
+                <ol class="process-list">
+                    <li>Немедленно измените пароль (с другого устройства)</li>
+                    <li>Включите 2FA, если еще не включена</li>
+                    <li>Проверьте историю входов и удалите подозрительные сессии</li>
+                    <li>Если это email - проверьте recovery-опции (дополнительный email, номер телефона)</li>
+                    <li>Проверьте все связанные аккаунты</li>
+                    <li>Если это банк - свяжитесь с ними немедленно</li>
+                </ol>
+
+                <h4>Если ваше устройство заражено:</h4>
+                <ol class="process-list">
+                    <li>Отключите интернет (Wi-Fi и мобильный)</li>
+                    <li>Отключите Bluetooth</li>
+                    <li>Используйте другое устройство для смены паролей</li>
+                    <li>Попробуйте восстановить систему из резервной копии</li>
+                    <li>Если не помогло - переформатируйте диск и переустановите ОС</li>
+                    <li>Восстановите данные из резервной копии</li>
+                </ol>
+
+                <h4>Контакты для помощи:</h4>
+                <ul class="protection-list">
+                    <li>Поддержка Google: google.com/account/recovery</li>
+                    <li>Поддержка Microsoft: account.microsoft.com/security</li>
+                    <li>Поддержка Facebook: facebook.com/security</li>
+                    <li>Местная полиция - для регистрации преступления</li>
+                    <li>Have I Been Pwned - для проверки взломанных данных</li>
+                </ul>
+
+                <h4>Чек-лист восстановления:</h4>
+                <ul class="protection-list">
+                    <li>☑ Измените все пароли</li>
+                    <li>☑ Включите 2FA везде</li>
+                    <li>☑ Проверьте банковские счета и кредитные карты</li>
+                    <li>☑ Мониторьте кредитный отчет (если возможно)</li>
+                    <li>☑ Обновите антивирус и запустите полное сканирование</li>
+                    <li>☑ Уведомьте контакты о потенциальной краже личных данных</li>
+                </ul>
+            </div>
+            </div>
+        </section>
+        </main>
+    </div>
+
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+            <path fill="#1a202c" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"></path>
+        </svg>
+    </div>
+    <footer>
+        <div class="footer-blob"></div>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4 data-i18n="footer_title">CyberAware</h4>
+                <p data-i18n="footer_description">Образовательная платформа по кибербезопасности для студентов</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_quick_links">Быстрые ссылки</h4>
+                <ul>
+                    <li><a href="threats.html" data-i18n="nav_threats">Угрозы</a></li>
+                    <li><a href="learning.html" data-i18n="nav_learning">Обучение</a></li>
+                    <li><a href="tips.html" data-i18n="nav_tips">Советы</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_contacts">Контакты</h4>
+                <p><span data-i18n="footer_name">Имя</span>: <strong>Zagvozdina Alexandra</strong></p>
+                <p><span data-i18n="footer_phone">Телефон</span>: <a href="tel:+77783682222">+7 778 368 2222</a></p>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 CyberAware. <span data-i18n="footer_copyright">Защита в цифровом мире. Образование для безопасного завтра.</span></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

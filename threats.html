@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="threats_page_title">Угрозы - CyberAware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="guides.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <i class="fas fa-shield-alt"></i> CyberAware
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </div>
+                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </div>
+            </div>
+            <a href="auth.html" class="btn btn-secondary" data-i18n="btn_login">Вход</a>
+            <a href="auth.html" class="btn btn-primary" data-i18n="btn_register">Регистрация</a>
+            <button class="menu-toggle" type="button" aria-label="Открыть меню" data-drawer-open>
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="profile-drawer-overlay" data-drawer-overlay></div>
+    <aside class="profile-drawer" data-profile-drawer aria-hidden="true">
+        <div class="profile-drawer-head">
+            <h4 data-i18n="drawer_menu">Меню</h4>
+            <button class="profile-drawer-close" type="button" aria-label="Закрыть" data-drawer-close>&times;</button>
+        </div>
+        <a href="profile.html" class="btn btn-primary" data-i18n="drawer_profile">Личный кабинет</a>
+    </aside>
+
+    <div class="lesson-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3 data-i18n="sidebar_navigation">Навигация</h3>
+                <p>CyberAware</p>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="threats.html" class="active">
+                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                        <span data-i18n="nav_threats">Угрозы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="learning.html">
+                        <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span data-i18n="nav_learning">Обучение</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tips.html">
+                        <span class="icon"><i class="fas fa-lightbulb"></i></span>
+                        <span data-i18n="nav_tips">Советы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="test.html">
+                        <span class="icon"><i class="fas fa-clipboard-check"></i></span>
+                        <span data-i18n="nav_test">Тест</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+        <section class="guide-section">
+            <div class="section-header">
+                <h2 data-i18n="threats_guide_title">Полный гайд по угрозам кибербезопасности</h2>
+                <p data-i18n="threats_guide_subtitle">Узнайте о основных угрозах в интернете и защитите себя</p>
+            </div>
+
+            <div class="guide-toc">
+                <h3 data-i18n="threats_toc">Содержание:</h3>
+                <ul data-i18n-html="threats_toc_list">
+                    <li><a href="#basics">Основы кибербезопасности</a></li>
+                    <li><a href="#phishing">Фишинг-атаки</a></li>
+                    <li><a href="#malware">Вредоносное ПО</a></li>
+                    <li><a href="#ransomware">Программы-вымогатели</a></li>
+                    <li><a href="#password-attack">Атаки на пароли</a></li>
+                    <li><a href="#social-eng">Социальная инженерия</a></li>
+                    <li><a href="#identity-theft">Кража личных данных</a></li>
+                    <li><a href="#man-in-middle">Атаки "Man in the Middle"</a></li>
+                </ul>
+            </div>
+
+            <div data-i18n-html="threats_sections_html">
+                <div id="basics" class="guide-subsection">
+                    <h3><i class="fas fa-network-wired"></i> Основы кибербезопасности</h3>
+                    <p>Кибербезопасность состоит из трех основных столпов, которые защищают вашу информацию:</p>
+                    
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <h5>1. Конфиденциальность</h5>
+                            <p>Только авторизованные пользователи имеют доступ к вашим данным. Это означает, что ваша личная информация должна быть зашифрована и защищена от несанкционированного доступа.</p>
+                            <ul class="protection-list">
+                                <li>✓ Использование надежных паролей</li>
+                                <li>✓ Двухфакторная аутентификация</li>
+                                <li>✓ Шифрование данных</li>
+                            </ul>
+                        </div>
+                        <div class="info-card">
+                            <h5>2. Целостность</h5>
+                            <p>Данные не изменены и являются подлинными. Это гарантирует, что информация не была изменена или испорчена без вашего ведома.</p>
+                            <ul class="protection-list">
+                                <li>✓ Проверка подлинности сообщений</li>
+                                <li>✓ Цифровые подписи</li>
+                                <li>✓ Контрольные суммы</li>
+                            </ul>
+                        </div>
+                        <div class="info-card">
+                            <h5>3. Доступность</h5>
+                            <p>Системы и данные доступны, когда они вам нужны. Это значит, что ваши аккаунты не должны быть подвергнуты атакам типа DDoS или другим сбоям.</p>
+                            <ul class="protection-list">
+                                <li>✓ Резервные копии данных</li>
+                                <li>✓ Избыточные системы</li>
+                                <li>✓ Защита от DDoS-атак</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="phishing" class="guide-subsection">
+                    <h3><i class="fas fa-envelope-open-text"></i> Фишинг-атаки</h3>
+                    <p>Фишинг - это тип мошенничества, когда злоумышленники выдают себя за доверенное лицо или организацию для кражи ваших данных.</p>
+                    
+                    <h4>Типы фишинга:</h4>
+                    <div class="threat-list">
+                        <div class="threat-item">
+                            <h5>Email фишинг</h5>
+                            <p>Поддельные письма, которые выглядят как из вашего банка, PayPal, социальных сетей и т.д. Они обычно содержат ссылки на поддельные сайты.</p>
+                            <strong>Признаки:</strong> Общие приветствия, срочность, подозрительные ссылки, прошу подтвердить личные данные
+                        </div>
+                        <div class="threat-item">
+                            <h5>Spear Phishing</h5>
+                            <p>Целевые фишинг-атаки на конкретных людей или компании. Атакующие исследуют жертву и создают персонализированные письма.</p>
+                            <strong>Признаки:</strong> Знают ваше имя, детали работы, личные данные, более убедительные письма
+                        </div>
+                        <div class="threat-item">
+                            <h5>Whaling</h5>
+                            <p>Фишинг-атаки на высокопоставленных должностных лиц (генеральные директоры, финансовые директоры и т.д.)</p>
+                            <strong>Признаки:</strong> Письма от якобы руководства компании с требованием передать конфиденциальную информацию
+                        </div>
+                    </div>
+
+                    <h4>Как защитить себя от фишинга:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Проверяйте email адрес отправителя - часто они содержат опечатки</li>
+                        <li>✓ Наведите мышь на ссылки, чтобы увидеть реальный URL</li>
+                        <li>✓ Никогда не вводите пароли по ссылкам из писем</li>
+                        <li>✓ Включите двухфакторную аутентификацию</li>
+                        <li>✓ Проверяйте, защищен ли сайт (замок в адресной строке, https://)</li>
+                        <li>✓ Используйте специализированные фильтры от фишинга</li>
+                    </ul>
+                </div>
+
+                <div id="malware" class="guide-subsection">
+                    <h3><i class="fas fa-virus"></i> Вредоносное ПО (Malware)</h3>
+                    <p>Вредоносное программное обеспечение - это программы, предназначенные для нанесения вреда вашему компьютеру или краже данных.</p>
+                    
+                    <h4>Типы вредоноса:</h4>
+                    <div class="threat-list">
+                        <div class="threat-item">
+                            <h5>Вирусы</h5>
+                            <p>Самовоспроизводящиеся программы, которые заражают другие файлы и распространяются между компьютерами.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Черви (Worms)</h5>
+                            <p>Похожи на вирусы, но могут распространяться независимо без необходимости заражать другие программы.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Троян (Trojan)</h5>
+                            <p>Программа, выдающая себя за полезное ПО, но содержит вредоносный код.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Spyware</h5>
+                            <p>Программа, которая шпионит за вашей деятельностью и крадет личную информацию.</p>
+                        </div>
+                    </div>
+
+                    <h4>Признаки заражения малварью:</h4>
+                    <ul class="protection-list">
+                        <li>Компьютер работает медленнее обычного</li>
+                        <li>Появляются всплывающие окна и реклама</li>
+                        <li>Программы открываются и закрываются сами по себе</li>
+                        <li>Большой объем трафика в сети</li>
+                        <li>Изменения в браузере (новая домашняя страница, поисковая система)</li>
+                    </ul>
+
+                    <h4>Как защитить себя:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Установите и обновляйте антивирусное ПО</li>
+                        <li>✓ Скачивайте программы только с официальных сайтов</li>
+                        <li>✓ Не открывайте неизвестные вложения в письмах</li>
+                        <li>✓ Регулярно обновляйте операционную систему</li>
+                        <li>✓ Используйте файрвол</li>
+                    </ul>
+                </div>
+
+                <div id="ransomware" class="guide-subsection">
+                    <h3><i class="fas fa-lock"></i> Программы-вымогатели (Ransomware)</h3>
+                    <p>Ransomware - это вредоносное ПО, которое шифрует ваши файлы и требует выкуп за их восстановление.</p>
+                    
+                    <h4>Как работает ransomware:</h4>
+                    <ol class="process-list">
+                        <li>Заражение через поддельное письмо, загруженный файл или уязвимость</li>
+                        <li>Программа шифрует все важные файлы на компьютере</li>
+                        <li>Появляется сообщение с требованием выкупа</li>
+                        <li>Чем дольше вы ждете, тем выше цена</li>
+                    </ol>
+
+                    <h4>Что делать, если ваш компьютер заражен:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Отключите компьютер от интернета сразу же</li>
+                        <li>✓ НЕ платите выкуп</li>
+                        <li>✓ Проверьте восстановление файлов из резервной копии</li>
+                        <li>✓ Обратитесь в поддержку соответствующих служб</li>
+                        <li>✓ Переформатируйте жесткий диск и переустановите ОС</li>
+                    </ul>
+
+                    <h4>Профилактика:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Регулярно создавайте резервные копии файлов</li>
+                        <li>✓ Отключайте макросы в документах</li>
+                        <li>✓ Используйте облачное хранилище для важных файлов</li>
+                        <li>✓ Обновляйте все программы и ОС</li>
+                    </ul>
+                </div>
+
+                <div id="password-attack" class="guide-subsection">
+                    <h3><i class="fas fa-key"></i> Атаки на пароли</h3>
+                    <p>Злоумышленники используют различные методы для взлома паролей и получения доступа к вашим аккаунтам.</p>
+                    
+                    <h4>Типы атак на пароли:</h4>
+                    <div class="threat-list">
+                        <div class="threat-item">
+                            <h5>Brute Force (Перебор)</h5>
+                            <p>Программа пытается все возможные комбинации пароля. Слабые пароли можно взломать за часы или дни.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Dictionary Attack (Атака словаря)</h5>
+                            <p>Использование списка известных слов, имен и паролей для попытки входа.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Rainbow Tables</h5>
+                            <p>Предварительно вычисленные хеши паролей, используемые для быстрого нахождения пароля.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Credential Stuffing</h5>
+                            <p>Использование украденных учетных данных из взломанных сервисов для доступа к другим аккаунтам.</p>
+                        </div>
+                    </div>
+
+                    <h4>Признаки слабого пароля:</h4>
+                    <ul class="protection-list">
+                        <li>✗ Менее 12 символов</li>
+                        <li>✗ Состоит только из букв или только из цифр</li>
+                        <li>✗ Используется на нескольких сайтах</li>
+                        <li>✗ Содержит личную информацию (день рождения, имя)</li>
+                        <li>✗ Является общеупотребительным словом</li>
+                    </ul>
+
+                    <h4>Признаки надежного пароля:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Минимум 12-16 символов</li>
+                        <li>✓ Содержит прописные и строчные буквы</li>
+                        <li>✓ Содержит цифры и специальные символы (!@#$%)</li>
+                        <li>✓ Уникален для каждого сайта</li>
+                        <li>✓ Не содержит личную информацию</li>
+                        <li>✓ Сложен для угадывания, но запоминаем для вас</li>
+                    </ul>
+                </div>
+
+                <div id="social-eng" class="guide-subsection">
+                    <h3><i class="fas fa-users"></i> Социальная инженерия</h3>
+                    <p>Техники манипуляции людьми для получения конфиденциальной информации или доступа к системам.</p>
+                    
+                    <h4>Распространенные методы:</h4>
+                    <div class="threat-list">
+                        <div class="threat-item">
+                            <h5>Притворство (Impersonation)</h5>
+                            <p>Выдача себя за служащего компании, технического специалиста или авторитетного лица для получения доступа.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Претексты (Pretexting)</h5>
+                            <p>Создание выдуманного сценария для того, чтобы убедить человека раскрыть информацию.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Quid Pro Quo</h5>
+                            <p>Обещание выполнить какую-то услугу в обмен на информацию или доступ.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>Tailgating</h5>
+                            <p>Физическое следование за сотрудником в защищенное помещение под предлогом доставки или встречи.</p>
+                        </div>
+                    </div>
+
+                    <h4>Как защитить себя:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Будьте осторожны с незнакомцами по телефону</li>
+                        <li>✓ Проверяйте личность человека перед тем, как делиться информацией</li>
+                        <li>✓ Не оставляйте пароли на стикерах или видном месте</li>
+                        <li>✓ Не делитесь личной информацией в соцсетях</li>
+                        <li>✓ Сообщайте о подозрительной активности</li>
+                        <li>✓ Пройдите обучение по информационной безопасности</li>
+                    </ul>
+                </div>
+
+                <div id="identity-theft" class="guide-subsection">
+                    <h3><i class="fas fa-id-card"></i> Кража личных данных (Identity Theft)</h3>
+                    <p>Преступник использует вашу личную информацию для совершения мошенничества или получения кредитов.</p>
+                    
+                    <h4>Как воры получают доступ к вашим данным:</h4>
+                    <ul class="protection-list">
+                        <li>Взломанные базы данных компаний</li>
+                        <li>Фишинг-письма</li>
+                        <li>Поддельные сайты</li>
+                        <li>Социальные сети</li>
+                        <li>Потерянные или выброшенные документы</li>
+                        <li>Открытые Wi-Fi сети</li>
+                    </ul>
+
+                    <h4>Признаки кражи личных данных:</h4>
+                    <ul class="protection-list">
+                        <li>⚠ Счета, которые вы не открывали</li>
+                        <li>⚠ Неожиданные звонки от кредиторов</li>
+                        <li>⚠ Кредитные карты, которые вы не заказывали</li>
+                        <li>⚠ Странные платежи в выписках</li>
+                        <li>⚠ Отказ в кредите</li>
+                    </ul>
+
+                    <h4>Что делать при краже личных данных:</h4>
+                    <ol class="process-list">
+                        <li>Свяжитесь с вашим банком и кредитными учреждениями</li>
+                        <li>Подайте жалобу в полицию</li>
+                        <li>Заморозьте ваш кредитный счет</li>
+                        <li>Измените все пароли</li>
+                        <li>Отслеживайте кредитный отчет</li>
+                    </ol>
+                </div>
+
+                <div id="man-in-middle" class="guide-subsection">
+                    <h3><i class="fas fa-exchange-alt"></i> Атаки "Man in the Middle" (MITM)</h3>
+                    <p>Злоумышленник перехватывает связь между двумя сторонами для кражи данных или внедрения вредоноса.</p>
+                    
+                    <h4>Сценарии атак MITM:</h4>
+                    <div class="threat-list">
+                        <div class="threat-item">
+                            <h5>Wifi Sniffing</h5>
+                            <p>Атакующий создает поддельную Wi-Fi сеть и перехватывает трафик неосторожных пользователей.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>DNS Spoofing</h5>
+                            <p>Перенаправление вас на поддельный сайт вместо настоящего через подделку DNS-запросов.</p>
+                        </div>
+                        <div class="threat-item">
+                            <h5>SSL Stripping</h5>
+                            <p>Удаление шифрования HTTPS и перехват незащищенного HTTP трафика.</p>
+                        </div>
+                    </div>
+
+                    <h4>Как защитить себя от MITM атак:</h4>
+                    <ul class="protection-list">
+                        <li>✓ Избегайте публичных Wi-Fi сетей для конфиденциальных операций</li>
+                        <li>✓ Используйте VPN для защиты трафика</li>
+                        <li>✓ Проверяйте замок (https) в адресной строке</li>
+                        <li>✓ Не заходите в личные кабинеты через публичный интернет</li>
+                        <li>✓ Используйте двухфакторную аутентификацию</li>
+                        <li>✓ Проверяйте сертификаты SSL на сайтах</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        </main>
+    </div>
+
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+            <path fill="#1a202c" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"></path>
+        </svg>
+    </div>
+    <footer>
+        <div class="footer-blob"></div>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4 data-i18n="footer_title">CyberAware</h4>
+                <p data-i18n="footer_description">Образовательная платформа по кибербезопасности для студентов</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_quick_links">Быстрые ссылки</h4>
+                <ul>
+                    <li><a href="threats.html" data-i18n="nav_threats">Угрозы</a></li>
+                    <li><a href="learning.html" data-i18n="nav_learning">Обучение</a></li>
+                    <li><a href="tips.html" data-i18n="nav_tips">Советы</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_contacts">Контакты</h4>
+                <p><span data-i18n="footer_name">Имя</span>: <strong>Zagvozdina Alexandra</strong></p>
+                <p><span data-i18n="footer_phone">Телефон</span>: <a href="tel:+77783682222">+7 778 368 2222</a></p>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 CyberAware. <span data-i18n="footer_copyright">Защита в цифровом мире. Образование для безопасного завтра.</span></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

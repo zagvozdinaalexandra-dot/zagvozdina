@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="learning_page_title">Обучение по кибербезопасности - CyberAware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --learning-bg: #f4f7fb;
+            --panel-bg: #ffffff;
+            --panel-border: #e5e7eb;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent: #00a8ff;
+            --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.08);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--learning-bg);
+            color: var(--text-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+
+        .lesson-wrapper {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #ffffff;
+            border-right: 1px solid rgba(148, 163, 184, 0.12);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            box-shadow: 0 0 0 1px transparent;
+            position: sticky;
+            top: 72px;
+            align-self: flex-start;
+            min-height: calc(100vh - 72px);
+            max-height: calc(100vh - 72px);
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-header h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .sidebar-header p {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0 0.8rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 168, 255, 0.12);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00a8ff, #0056b3);
+            width: 10%;
+            transition: width 0.4s ease;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1rem;
+            border-radius: 14px;
+            background: #f8fafc;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(0, 168, 255, 0.08);
+            transform: translateX(2px);
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(0, 168, 255, 0.12);
+            border-left: 4px solid var(--accent);
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .sidebar-nav .icon {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: rgba(0, 168, 255, 0.12);
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+
+        .sidebar-nav .status {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .status-completed {
+            color: #16a34a;
+        }
+
+        .status-current {
+            color: var(--accent);
+        }
+
+        .status-locked {
+            color: #64748b;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .lesson-header {
+            margin-bottom: 1.75rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .lesson-title {
+            font-size: clamp(2.4rem, 3vw, 3.4rem);
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.05;
+        }
+
+        .lesson-subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 760px;
+            line-height: 1.8;
+        }
+
+        .lesson-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .lesson-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            background: #f8fafc;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .content-block {
+            background: var(--panel-bg);
+            padding: 2rem;
+            border-radius: 22px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--panel-border);
+            margin-bottom: 1.75rem;
+        }
+
+        .content-block h3 {
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-block p,
+        .content-block li {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.9;
+        }
+
+        .content-block ul,
+        .content-block ol {
+            margin: 1rem 0 0 1.25rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.25rem;
+            margin: 1.75rem 0;
+        }
+
+        .comparison-item {
+            padding: 1.75rem;
+            border-radius: 18px;
+            text-align: left;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bad {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.18);
+        }
+
+        .good {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .comparison-item h4 {
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .comparison-item p {
+            color: var(--text-muted);
+            margin: 0.45rem 0;
+        }
+
+        .accordion {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 18px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            background: transparent;
+            padding: 1.4rem 1.7rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .accordion-header h4 {
+            margin: 0;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .accordion-icon {
+            color: var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 360px;
+        }
+
+        .accordion-text {
+            padding: 1rem 1.7rem 1.6rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+        }
+
+        .quiz-section {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 22px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            margin: 2rem 0;
+        }
+
+        .quiz-title {
+            color: var(--text-dark);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #ffffff;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: rgba(0, 168, 255, 0.4);
+            background: rgba(0, 168, 255, 0.05);
+        }
+
+        .quiz-option.correct {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .quiz-button {
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .quiz-button:not(:disabled):hover {
+            background: #0096d9;
+            box-shadow: 0 12px 30px rgba(0, 168, 255, 0.22);
+        }
+
+        .lesson-footer {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .nav-button {
+            flex: 1 1 240px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: #ffffff;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .nav-button:hover:not(:disabled) {
+            border-color: rgba(0, 168, 255, 0.35);
+            background: rgba(0, 168, 255, 0.08);
+        }
+
+        .nav-button.next {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: var(--accent);
+        }
+
+        .nav-button.next:hover {
+            background: #0096d9;
+        }
+
+        .nav-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .nav-title {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+
+        @media (max-width: 1024px) {
+            .lesson-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+                display: block;
+                overflow: visible;
+            }
+
+            .sidebar-nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .sidebar-nav a {
+                padding: 0.85rem 1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar-nav {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-title {
+                font-size: 2rem;
+            }
+
+            .quiz-button,
+            .nav-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <i class="fas fa-shield-alt"></i> CyberAware
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </div>
+                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </div>
+            </div>
+            <a href="auth.html" class="btn btn-secondary" data-i18n="btn_login">Вход</a>
+            <a href="auth.html" class="btn btn-primary" data-i18n="btn_register">Регистрация</a>
+            <button class="menu-toggle" type="button" aria-label="Открыть меню" data-drawer-open>
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="profile-drawer-overlay" data-drawer-overlay></div>
+    <aside class="profile-drawer" data-profile-drawer aria-hidden="true">
+        <div class="profile-drawer-head">
+            <h4 data-i18n="drawer_menu">Меню</h4>
+            <button class="profile-drawer-close" type="button" aria-label="Закрыть" data-drawer-close>&times;</button>
+        </div>
+        <a href="profile.html" class="btn btn-primary" data-i18n="drawer_profile">Личный кабинет</a>
+    </aside>
+
+    <div class="lesson-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3 data-i18n="sidebar_navigation">Навигация</h3>
+                <p>CyberAware</p>
+            </div>
+            
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="threats.html">
+                        <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                        <span data-i18n="nav_threats">Угрозы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="learning.html" class="active">
+                        <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span data-i18n="nav_learning">Обучение</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tips.html">
+                        <span class="icon"><i class="fas fa-lightbulb"></i></span>
+                        <span data-i18n="nav_tips">Советы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="test.html">
+                        <span class="icon"><i class="fas fa-clipboard-check"></i></span>
+                        <span data-i18n="nav_test">Тест</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="lesson-header">
+                <div class="lesson-title" data-i18n="learning_title">Обучение по кибербезопасности</div>
+                <p class="lesson-subtitle" data-i18n="learning_subtitle">Полный материал по 9 ключевым темам: от паролей до мобильной защиты, без тестов и проверок.</p>
+                <div class="lesson-meta">
+                </div>
+            </div>
+
+            <div data-i18n-html="learning_sections_html">
+            <div id="digital-footprint" class="content-block">
+                <h3><i class="fas fa-footprints"></i> Цифровой след</h3>
+                <p>Цифровой след — это совокупность всех данных, которые вы оставляете в интернете. Каждое действие онлайн создает отпечаток: публикация фото, вход в аккаунт, поиск информации, покупка товаров. Этот след могут использовать для построения профиля, анализа поведения, целевого маркетинга или даже для атак.</p>
+                
+                <p><strong>Активный след</strong> — это данные, которые вы сами создаете и контролируете:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>посты, истории и комментарии в соцсетях;</li>
+                    <li>фото и видео с метаданными (дата, место, камера);</li>
+                    <li>список друзей и подписок;</li>
+                    <li>регистрация на сайтах и приложениях;</li>
+                    <li>профили на разных платформах и форумах;</li>
+                    <li>отзывы и оценки, которые вы оставляете.</li>
+                </ul>
+                
+                <p><strong>Пассивный след</strong> — это данные, которые собирают о вас сервисы без прямого участия:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>IP-адрес вашего устройства;</li>
+                    <li>информация из куков и браузерные сессии;</li>
+                    <li>история посещений и поисков;</li>
+                    <li>поведение на сайтах (кнопки, скролл, время);
+                    <li>местоположение, если включена геолокация;</li>
+                    <li>данные о вашем устройстве (ОС, браузер, разрешение экрана).</li>
+                </ul>
+                
+                <p><strong>Третий вид — кешированный след:</strong> информация, которая сохранена на серверах поисковых систем, архивов и социальных сетей. Даже если вы удалите пост, он может остаться в кеше Google или Internet Archive на долгое время.</p>
+                
+                <p><strong>Зачем это опасно:</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Дата рождения, адрес и номер телефона могут использоваться для взлома аккаунтов;</li>
+                    <li>Привычки и интересы помогают мошенникам составить убедительное письмо или звонок;</li>
+                    <li>История поисков раскрывает медицинские проблемы, финансовые сложности и личные переживания;</li>
+                    <li>Фото с метаданными показывают, где вы работаете, живете и часто бываете;</li>
+                    <li>Публичная информация помогает сформировать полный портрет для социальной инженерии.</li>
+                </ul>
+                
+                <p><strong>Как минимизировать свой след:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Проверьте настройки приватности на всех соцсетях — ограничьте доступ к профилю, фото и списку друзей только для проверенных людей;</li>
+                    <li>Удаляйте старые посты, особенно те, где указано место или время;</li>
+                    <li>Отключите геолокацию в приложениях и на фотографиях;</li>
+                    <li>Используйте отдельный адрес электронной почты для разных целей (личная, работа, покупки);</li>
+                    <li>Регулярно очищайте историю браузера и куки;</li>
+                    <li>Используйте VPN при посещении сайтов, чтобы скрыть IP-адрес;</li>
+                    <li>Проверяйте, какие приложения имеют доступ к вашему местоположению, камере и микрофону;</li>
+                    <li>Не публикуйте документы, билеты, паспортные данные или коды доступа;</li>
+                    <li>Используйте инструменты для поиска себя в интернете (Google Search, имена в архивах);</li>
+                    <li>Удаляйте старые аккаунты, которые больше не используете.</li>
+                </ol>
+            </div>
+
+            <div id="password-anatomy" class="content-block">
+                <h3><i class="fas fa-key"></i> Анатомия пароля</h3>
+                <p>Пароль — это первая линия защиты вашего аккаунта. Слабый пароль можно взломать за секунды, но надежный пароль может защищать ваши данные годами. Хороший пароль должен состоять из трех компонентов: длины, разнообразия и непредсказуемости.</p>
+                
+                <p><strong>1. Длина пароля</strong></p>
+                <p>Каждый дополнительный символ экспоненциально увеличивает время, необходимое для взлома методом перебора. Если пароль состоит только из букв (26 вариантов), то 8-символный пароль имеет 26^8 = 208 миллиардов комбинаций. Если добавить цифры и символы (95 вариантов), то для 8 символов получится 95^8 = 6,6 квадриллионов комбинаций. Именно поэтому рекомендуется использовать <strong>минимум 12-16 символов</strong>.</p>
+                
+                <p><strong>2. Разнообразие символов</strong></p>
+                <p>Используйте комбинацию из четырех типов символов:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Прописные буквы (A-Z);</li>
+                    <li>Строчные буквы (a-z);</li>
+                    <li>Цифры (0-9);</li>
+                    <li>Специальные символы (!@#$%^&*-_+=).</li>
+                </ul>
+                <p>Пример хорошего пароля: <strong>Tr0p!cal$unset#2025</strong> (18 символов, содержит все типы).</p>
+                
+                <p><strong>3. Непредсказуемость</strong></p>
+                <p>Избегайте:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Последовательностей: 123456, qwerty, abcdef;</li>
+                    <li>Слов из словаря: password, dragon, sunshine;</li>
+                    <li>Личных данных: ваше имя, дата рождения, имя питомца;</li>
+                    <li>Повторяющихся символов: aaaaaa, 111111;</li>
+                    <li>Паттернов, видимых на клавиатуре: qazwsx, asdfgh.</li>
+                </ul>
+                
+                <p><strong>Проблема: один и тот же пароль везде</strong></p>
+                <p>Если вы используете один пароль для всех сервисов и один из них будет взломан, злоумышленник получит доступ ко всем вашим аккаунтам. Статистика показывает, что 52% людей используют один и тот же пароль или его варианты для разных сайтов. Это увеличивает риск в экспоненциальной степени.</p>
+                
+                <p><strong>Менеджер паролей — лучшее решение</strong></p>
+                <p>Менеджер паролей хранит все ваши пароли в зашифрованном виде под одним мастер-паролем. Примеры надежных менеджеров:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Bitwarden</strong> — бесплатный, с открытым кодом, работает на всех устройствах;</li>
+                    <li><strong>1Password</strong> — платный, надежный, с хорошей поддержкой;</li>
+                    <li><strong>KeePass</strong> — бесплатный, локальный, без облачного хранилища;</li>
+                    <li><strong>Dashlane</strong> — платный, удобный для браузеров.</li>
+                </ul>
+                
+                <p><strong>Как менеджер паролей работает:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Вы генерируете и сохраняете пароль в менеджер;</li>
+                    <li>Менеджер шифрует пароль и хранит его локально или в облаке;</li>
+                    <li>При входе на сайт менеджер автоматически подставляет правильный пароль;</li>
+                    <li>Вам нужно помнить только один мастер-пароль.</li>
+                </ol>
+                
+                <p><strong>Безопасные мастер-пароли:</strong></p>
+                <p>Мастер-пароль — это самый важный пароль, потому что от него зависит безопасность всех остальных. Используйте длинную фразу, которую только вы знаете:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«МойПервыйПес$звалсяМакс2010» — 30 символов, уникален, запоминаемый;</li>
+                    <li>«Япомню1стройку#вПолуночь2018» — включает буквы, цифры и символы.</li>
+                </ul>
+                
+                <p><strong>Проверка слабых паролей:</strong></p>
+                <p>Используйте сервисы для проверки безопасности пароля:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Have I Been Pwned</strong> — проверяет, скомпрометирован ли ваш пароль;</li>
+                    <li><strong>Password Strength Checker</strong> — оценивает стойкость пароля;</li>
+                    <li><strong>Bitwarden Password Generator</strong> — генерирует надежные пароли.</li>
+                </ul>
+            </div>
+
+            <div id="2fa" class="content-block">
+                <h3><i class="fas fa-shield-alt"></i> 2FA (Двухфакторная аутентификация)</h3>
+                <p>Двухфакторная аутентификация (2FA) — это второй слой защиты поверх пароля. Даже если злоумышленник узнает ваш пароль, он не сможет войти в аккаунт без второго фактора. Это критически важно для защиты важных сервисов.</p>
+                
+                <p><strong>Почему 2FA необходима:</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Пароли легко подбираются при помощи словарей и переборов;</li>
+                    <li>Пароли часто утекают из-за взломов базы данных;</li>
+                    <li>Фишинговые атаки могут вынудить вас раскрыть пароль;</li>
+                    <li>Вредоносное ПО может перехватывать ввод пароля;</li>
+                    <li>2FA защищает от всех этих угроз сразу.</li>
+                </ul>
+                
+                <p><strong>Типы 2FA и их безопасность:</strong></p>
+                
+                <p><strong>1. SMS-коды (уровень безопасности: низкий-средний)</strong></p>
+                <p>Код приходит по SMS на ваш телефон. Преимущества: просто и быстро. Недостатки:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Коды можно перехватить с помощью SS7-атак;</li>
+                    <li>SIM-card swapping — мошенник может переоформить вашу SIM карту;</li>
+                    <li>SMS не защищена от слежки спецслужб;</li>
+                    <li>Не работает при отсутствии связи.</li>
+                </ul>
+                <p>Рекомендация: используйте SMS только как резервный вариант, а не основной метод 2FA.</p>
+                
+                <p><strong>2. Приложения-генераторы кодов (уровень безопасности: высокий)</strong></p>
+                <p>Приложения вроде Google Authenticator, Microsoft Authenticator, Authy генерируют коды прямо на телефоне. Каждый код действует только 30 секунд и основан на алгоритме TOTP (Time-based One-Time Password). Преимущества:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Коды генерируются локально, не через интернет;</li>
+                    <li>Не зависит от SMS и сотовой сети;</li>
+                    <li>Намного сложнее взломать, чем SMS;</li>
+                    <li>Работает на всех телефонах.</li>
+                </ul>
+                <p>Рекомендация: это лучший выбор для большинства людей. Установите несколько таких приложений на разные устройства для надежности.</p>
+                
+                <p><strong>3. Аппаратные ключи и токены (уровень безопасности: максимальный)</strong></p>
+                <p>Физические устройства вроде YubiKey, Google Titan или Ledger генерируют уникальные коды или используют криптографию. Преимущества:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Нельзя взломать дистанционно;</li>
+                    <li>Защита от фишинга — ключ подтверждает подлинность сайта;</li>
+                    <li>Один ключ может работать с множеством сервисов;</li>
+                    <li>Очень надежно даже против опытных хакеров.</li>
+                </ul>
+                <p>Недостатки: стоят денег (200-500 рублей), нужно всегда носить с собой. Рекомендация: купите аппаратный ключ для защиты самых важных аккаунтов (почта, банк, криптовалюта).</p>
+                
+                <p><strong>4. Биометрия (уровень безопасности: средний-высокий)</strong></p>
+                <p>Отпечаток пальца, распознавание лица или голоса. Удобно, но работает как дополнение к другим методам 2FA.</p>
+                
+                <p><strong>Какой 2FA выбрать:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Для самых важных аккаунтов (почта, банк, социальные сети): используйте аппаратный ключ или приложение-генератор;</li>
+                    <li>SMS используйте только как резервный вариант;</li>
+                    <li>Сохраняйте резервные коды (recovery codes) в безопасном месте;</li>
+                    <li>Регулярно обновляйте и проверяйте подключенные методы 2FA.</li>
+                </ol>
+                
+                <p><strong>Популярные сервисы с 2FA:</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Google Authenticator</strong> — бесплатный, работает на iOS и Android;</li>
+                    <li><strong>Microsoft Authenticator</strong> — интеграция с экосистемой Microsoft;</li>
+                    <li><strong>Authy</strong> — синхронизация между устройствами, удобный интерфейс;</li>
+                    <li><strong>YubiKey</strong> — аппаратный ключ, самый надежный вариант;</li>
+                    <li><strong>Google Titan</strong> — альтернатива YubiKey от Google.</li>
+                </ul>
+                
+                <p><strong>Важно помнить:</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Никогда не публикуйте скриншоты кодов 2FA в интернете;</li>
+                    <li>Не читайте коды 2FA вслух или другим людям;</li>
+                    <li>Сохраняйте резервные коды в надежном месте (менеджер паролей или физический документ);</li>
+                    <li>Если потеряли доступ к методу 2FA, восстановите его через резервный способ.</li>
+                </ul>
+            </div>
+
+            <div id="phishing" class="content-block">
+                <h3><i class="fas fa-envelope"></i> Фишинг</h3>
+                <p>Фишинг — это попытка обмана, когда злоумышленник выдает себя за надежный источник, чтобы получить ваши личные данные, пароли или заставить вас выполнить опасное действие. Это один из самых старых и эффективных методов кибератак: более 90% взломов начинаются с фишинг-письма.</p>
+                
+                <p><strong>Как устроена фишинговая атака:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Мошенник собирает информацию о жертве (имя, работу, друзей);</li>
+                    <li>Создает убедительное письмо, SMS или сообщение;</li>
+                    <li>Отправляет письмо с поддельной ссылкой или вложением;</li>
+                    <li>Когда вы переходите по ссылке, оказываетесь на поддельном сайте банка или сервиса;</li>
+                    <li>Вводите логин и пароль, думая, что это официальный сайт;</li>
+                    <li>Мошенник получает ваши данные и использует их для кражи денег или личности.</li>
+                </ol>
+                
+                <p><strong>Типы фишинга:</strong></p>
+                
+                <p><strong>1. Email фишинг</strong></p>
+                <p>Письмо якобы от банка, PayPal, Amazon или соцсети с просьбой «подтвердить данные» или «обновить платежный метод». Примеры:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Ваш аккаунт заблокирован. Подтвердите личность здесь»;</li>
+                    <li>«Обновите пароль, нажав на эту ссылку»;</li>
+                    <li>«Мы заметили подозрительную активность. Проверьте здесь»;</li>
+                    <li>«Вы выиграли приз! Перейдите сюда для получения».</li>
+                </ul>
+                
+                <p><strong>2. SMS фишинг (smishing)</strong></p>
+                <p>Сообщение в SMS с просьбой перейти по ссылке или позвонить на номер.</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Сбербанк: Ваша карта заблокирована. Перейдите sbrf-security.ru»;</li>
+                    <li>«Банк (ПСБ): Необычная транзакция. Подтвердите или отклоните»;</li>
+                    <li>«Ваш пакет доставлен. Отследить: [ссылка]»;</li>
+                    <li>«Кешбэк 5000р ждет вас: [ссылка]».</li>
+                </ul>
+                
+                <p><strong>3. Социальный фишинг</strong></p>
+                <p>Личное сообщение в соцсети от знакомого (если аккаунт взломан).</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Привет! Я в беде, нужны деньги. Отправь 5000р на номер»;</li>
+                    <li>«Посмотри на это видео, там ты!» (ссылка на вредоносный сайт);</li>
+                    <li>«Спешу! Нужен паспорт, отправь скан».</li>
+                </ul>
+                
+                <p><strong>4. Целевой фишинг (spear phishing)</strong></p>
+                <p>Персонализированный фишинг, когда мошенник изучает конкретного человека или компанию.</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Привет, Иван Петрович! Это IT-отдел компании. Нужно обновить пароль»;</li>
+                    <li>Письмо якобы от генерального директора с просьбой перевести деньги;</li>
+                    <li>Сообщение от якобы клиента с просьбой отправить счет по новым реквизитам.</li>
+                </ul>
+                
+                <p><strong>5. Фишинг вредоносными вложениями</strong></p>
+                <p>Письмо с документом (Word, PDF, Excel, архив), которое содержит вредоносный код.</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Требуется подпись: документ.doc»;</li>
+                    <li>«Счет на оплату: invoice.pdf»;</li>
+                    <li>«Отчет по убыткам: report.xlsx»;</li>
+                    <li>«Архив с фото выпускного: photos.rar».</li>
+                </ul>
+                
+                <p><strong>Как распознать фишинг:</strong></p>
+                
+                <p><strong>Проверяйте адрес отправителя</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Письмо якобы от Сбербанка, но адрес: sberbankru@gmail.com (подделка);</li>
+                    <li>От Amazon, но домен: amaz0n.com (похож, но не тот);</li>
+                    <li>Официальный банк отправляет с адреса @sberbank.ru, а не с @mail.ru;</li>
+                    <li>Наведите мышку на имя отправителя, чтобы увидеть реальный email.</li>
+                </ul>
+                
+                <p><strong>Проверяйте ссылки</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Наведите мышку на ссылку (не нажимайте!), посмотрите, куда она ведет;</li>
+                    <li>Если в письме от банка ссылка на test-security.com, это подделка;</li>
+                    <li>Даже если адрес выглядит правильно, переходите на сайт вручную, введя адрес в браузер;</li>
+                    <li>Безопасные сайты используют https:// и замок в адресной строке.</li>
+                </ul>
+                
+                <p><strong>Обратите внимание на стиль и грамматику</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Ошибки в тексте (синтаксис, пунктуация, стиль);</li>
+                    <li>Неправильное форматирование, странные шрифты;</li>
+                    <li>Давление на эмоции: «Срочно!», «Внимание!», «Немедленно!»;</li>
+                    <li>Банки не просят пароль и 2FA по электронной почте.</li>
+                </ul>
+                
+                <p><strong>Признаки опасности:</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Просьба подтвердить личные данные (пароль, PIN, CVV);</li>
+                    <li>Срочно нажать на кнопку или перейти по ссылке;</li>
+                    <li>Угрозы («аккаунт будет закрыт»);</li>
+                    <li>Предложение выигрыша, рефбонуса или возврата денег;</li>
+                    <li>Вложение .exe, .zip, .bat или другие подозрительные расширения;</li>
+                    <li>Просьба включить макросы в документе Word.</li>
+                </ul>
+                
+                <p><strong>Как защитить себя от фишинга:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Никогда не переходите по ссылкам из писем, SMS или сообщений. Вместо этого переходите на сайт вручную;</li>
+                    <li>Установите расширение для браузера, которое проверяет сайты (Google Safe Browsing, Kaspersky Protection);</li>
+                    <li>Будьте осторожны с письмами, требующими срочных действий;</li>
+                    <li>Не открывайте вложения от неизвестных отправителей;</li>
+                    <li>Никогда не вводите пароль или 2FA-коды на сайте, на который вы попали по ссылке из письма;</li>
+                    <li>Включите 2FA на все важные аккаунты — это защита от фишинга;</li>
+                    <li>Если сомневаетесь, позвоните на официальный номер банка (найдите номер на его сайте, а не в письме);</li>
+                    <li>Включите фильтры спама в почте;</li>
+                    <li>Проверяйте данные в личном кабинете банка, а не по ссылке из письма;</li>
+                    <li>Образование — лучшая защита: знайте, как работает фишинг.</li>
+                </ol>
+                
+                <p><strong>Что делать, если вы попались на фишинг:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Срочно смените пароль от аккаунта на официальном сайте (вручную, не по ссылке из письма);</li>
+                    <li>Если вы ввели данные карты, заблокируйте карту позвонив в банк;</li>
+                    <li>Включите мониторинг счета и проверяйте транзакции;</li>
+                    <li>Проверьте все подключенные к аккаунту устройства и приложения;</li>
+                    <li>Сообщите в компании о фишинге (там обычно есть форма для отчета о фишинге);</li>
+                    <li>Сообщите в полицию, если произошла кража денег;</li>
+                    <li>Используйте сервис Have I Been Pwned для проверки утечек данных.</li>
+                </ol>
+            </div>
+
+            <div id="social-media" class="content-block">
+                <h3><i class="fas fa-users"></i> Соцсети</h3>
+                <p>Социальные сети — это место, где люди добровольно публикуют информацию о себе. К сожалению, эта информация часто используется неправомерно: для адресного мошенничества, дискриминации, слежки, краски личности или политического манипулирования.</p>
+                
+                <p><strong>Какую информацию собирают соцсети о вас:</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Демографические данные (имя, возраст, пол, место проживания);</li>
+                    <li>Интересы и увлечения (по лайкам и комментариям);</li>
+                    <li>Личные отношения и семью;</li>
+                    <li>Работу и образование;</li>
+                    <li>Политические взгляды и религию;</li>
+                    <li>Здоровье и привычки (питание, спорт, болезни);</li>
+                    <li>Финансовое состояние (по посетам дорогих мест и покупкам);</li>
+                    <li>Местоположение и маршруты передвижения;</li>
+                    <li>Оборудование и браузер, которые вы используете;</li>
+                    <li>IP-адрес и особенности вашей сети.</li>
+                </ul>
+                
+                <p><strong>Зачем компании собирают эту информацию:</strong></p>
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Целевая реклама:</strong> показать вам объявления о товарах, которые вас интересуют. Мета (Facebook, Instagram) зарабатывает так большую часть своего дохода;</li>
+                    <li><strong>Продажа данных:</strong> компании продают информацию о пользователях рекламным агентствам и другим компаниям;</li>
+                    <li><strong>Анализ поведения:</strong> понять, какие новости, видео и контент вас интересуют;</li>
+                    <li><strong>Прогнозирование:</strong> предсказать ваше поведение, покупки и выборы;</li>
+                    <li><strong>Манипуляция:</strong> направить ваше мнение через показ определенного контента;</li>
+                    <li><strong>Кредитный скоринг:</strong> оценить вас как заемщика на основе данных.</li>
+                </ol>
+                
+                <p><strong>Риски публикации информации в соцсетях:</strong></p>
+                
+                <p><strong>1. Социальная инженерия</strong></p>
+                <p>Если мошенник знает вашу дату рождения, фамилию девичью матери, имя первого питомца и другие детали, он может легче взломать ваш аккаунт или выдать себя за вас.</p>
+                
+                <p><strong>2. Слежка и краска личности</strong></p>
+                <p>Партнер или преследователь может отследить вас по геопозиции в постах, узнать вашу работу и маршруты.</p>
+                
+                <p><strong>3. Кража личности</strong></p>
+                <p>С помощью ваших фото и информации мошенник может создать поддельный профиль и обманывать других людей.</p>
+                
+                <p><strong>4. Цифровой кровавый фут­прин (digital footprint)</strong></p>
+                <p>Публикуйте когда-то могут найти при трудоустройстве, судебных разбирательствах, или использовать для шантажа.</p>
+                
+                <p><strong>5. Дискриминация</strong></p>
+                <p>Работодатели, страховщики и кредиторы могут использовать информацию из соцсетей для принятия решений в ущерб вам.</p>
+                
+                <p><strong>Как защитить себя в соцсетях:</strong></p>
+                
+                <p><strong>1. Настройки приватности</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Установите максимальное ограничение видимости профиля: посты видны только друзьям;</li>
+                    <li>Отключите поиск по номеру телефона и email;</li>
+                    <li>Ограничьте кто может комментировать ваши посты;</li>
+                    <li>Отключите видимость списка друзей;</li>
+                    <li>Не показывайте дату рождения публично;</li>
+                    <li>Отключите отмечание вас на фото без вашего одобрения;</li>
+                    <li>Очищайте приватность для каждого сервиса отдельно (Facebook, Instagram, Twitter, TikTok имеют разные настройки).</li>
+                </ul>
+                
+                <p><strong>2. Что не публиковать</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Полное имя (используйте никнейм);</li>
+                    <li>Дату рождения;</li>
+                    <li>Адрес дома;</li>
+                    <li>Номер телефона и email;</li>
+                    <li>Фото паспорта, водительских прав, карт;</li>
+                    <li>Выпивает на важные события (свадьба, рождение, выпускной) — это раскрывает личные даты;</li>
+                    <li>Фото в путешествиях с постоянными отметками места;</li>
+                    <li>Фото детей с их именами и школой;</li>
+                    <li>Информацию о времени отпуска (это подсказка, что дома никого нет);</li>
+                    <li>Стоимость и информацию о новых вещах (украшения, машины);</li>
+                    <li>Скриншоты с банковскими данными, билетами, кодами;</li>
+                    <li>Местоположение в реальном времени.</li>
+                </ul>
+                
+                <p><strong>3. Геолокация</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Отключите геотеги на фотографиях перед публикацией;</li>
+                    <li>Отключите живое место (Live Location) в Instagram и Facebook;</li>
+                    <li>Удаляйте метаданные с фото перед публикацией (используйте программы вроде ExifTool);</li>
+                    <li>Не публикуйте фото в реальном времени, используйте старые фото;</li>
+                    <li>Если публикуете место, делайте это не в момент нахождения там, а позже.</li>
+                </ul>
+                
+                <p><strong>4. Управление приложениями и разрешениями</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Регулярно проверяйте, какие приложения имеют доступ к вашему профилю;</li>
+                    <li>Удаляйте приложения, которые больше не используете;</li>
+                    <li>Отключите доступ к микрофону и камере для приложений, которым это не нужно;</li>
+                    <li>Будьте осторожны с приложениями, запрашивающими доступ к друзьям и личной информации.</li>
+                </ul>
+                
+                <p><strong>5. Осторожность с контентом</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Не делитесь результатами тестов вроде «Какой вы президент» — они собирают данные;</li>
+                    <li>Не участвуйте в вызовах (челленжах), если они запрашивают личную информацию;</li>
+                    <li>Будьте осторожны с вирусными постами, которые просят поделиться (часто это фарминг данных);</li>
+                    <li>Не публикуйте скриншоты разговоров с личной информацией других людей;</li>
+                    <li>Проверяйте мошеннические аккаунты, которые выдают себя за вас, и сообщайте их.</li>
+                </ul>
+                
+                <p><strong>6. Прочие меры</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Используйте разные пароли для разных соцсетей;</li>
+                    <li>Включите 2FA на все важные аккаунты;</li>
+                    <li>Регулярно просматривайте активность и логины аккаунта;</li>
+                    <li>Используйте приватный браузер (Chrome Incognito, Firefox Private) при входе;</li>
+                    <li>Удаляйте старые посты и фото, которые больше не хотите показывать;</li>
+                    <li>Рассмотрите удаление или очистку архива старых постов;</li>
+                    <li>Не заходите в соцсети с общественных Wi-Fi без VPN;</li>
+                    <li>Читайте политики конфиденциальности и отказывайте в ненужных разрешениях;</li>
+                    <li>Используйте браузерные расширения для блокировки трекеров (uBlock Origin, Privacy Badger).</li>
+                </ul>
+            </div>
+
+            <div id="social-engineering" class="content-block">
+                <h3><i class="fas fa-user-secret"></i> Социальная инженерия</h3>
+                <p>Социальная инженерия — это использование психологических приемов для манипуляции людьми с целью получить доступ к конфиденциальной информации или заставить их совершить опасное действие. Это может быть более эффективно, чем технический взлом, потому что самое слабое звено в любой системе — это человек.</p>
+                
+                <p><strong>Основные принципы социальной инженерии:</strong></p>
+                
+                <p><strong>1. Построение доверия</strong></p>
+                <p>Мошенник представляется кем-то, кому вы можете доверять: сотрудник компании, чиновник, старый друг, благотворительная организация. Он может использовать реальные имена, названия и логотипы, чтобы выглядеть более убедительно.</p>
+                
+                <p><strong>2. Создание спешки</strong></p>
+                <p>«Нужно срочно!», «Только сегодня!», «Осталось 5 минут!» — спешка мешает нам думать критически. Мошенник заставляет вас действовать без проверки информации.</p>
+                
+                <p><strong>3. Использование эмоций</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Страх:</strong> «Ваш аккаунт заблокирован!», «Обнаружена нарушение!»;</li>
+                    <li><strong>Жадность:</strong> «Выигрыш 100 000 рублей!», «Кешбэк 50%!»;</li>
+                    <li><strong>Сочувствие:</strong> «Помогите ребенку», «Беженцы нуждаются в помощи»;</li>
+                    <li><strong>Любопытство:</strong> «Посмотри, это видео про тебя!», «Узнай, что о тебе думают».</li>
+                </ul>
+                
+                <p><strong>4. Авторитет</strong></p>
+                <p>Ссылка на авторитет заставляет людей подчиняться. Мошенник выдает себя за начальника, офицера полиции, налоговика или другого авторитетного лица.</p>
+                
+                <p><strong>5. Обратная номеров (числа и статистика)</strong></p>
+                <p>«92% людей одобрили», «Это лучше в 3 раза» — люди больше верят числам, даже если они вымышленные.</p>
+                
+                <p><strong>Типичные приемы социальной инженерии:</strong></p>
+                
+                <p><strong>Фишинг (уже рассмотрен выше)</strong></p>
+                
+                <p><strong>Предтекст (pretexting)</strong></p>
+                <p>Мошенник создает вымышленный сценарий, чтобы получить информацию. Примеры:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Звонок якобы от банка: «Это служба безопасности. Для проверки аккаунта назовите последние 4 цифры карты»;</li>
+                    <li>Звонок якобы от IT-отдела: «Нам нужно обновить вашу систему. Какой ваш пароль?»;</li>
+                    <li>Звонок якобы от социального работника: «Уточняю данные. Как зовут вашу мать в девичестве?»;</li>
+                    <li>Письмо якобы от налоговой: «Вам нужно заполнить форму. Отправьте копию паспорта».</li>
+                </ul>
+                
+                <p><strong>Обратный социальный инжиниринг</strong></p>
+                <p>Мошенник сначала создает проблему, затем предлагает себя как решение:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Распространяет вирус, затем предлагает «защиту» за деньги;</li>
+                    <li>Блокирует аккаунт, затем предлагает восстановление по ссылке;</li>
+                    <li>Отправляет письмо о блокировке, затем предлагает форму восстановления.</li>
+                </ul>
+                
+                <p><strong>Baiting (приманка)</strong></p>
+                <p>Оставить физический предмет, чтобы вызвать любопытство:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Флешка на столе компании с файлом «Зарплата 2025»;</li>
+                    <li>Письмо с документами в подъезде;</li>
+                    <li>СД в почте с надписью «Интересное видео».</li>
+                </ul>
+                <p>Когда вы подключаете флешку или открываете файл, активируется вредоносное ПО.</p>
+                
+                <p><strong>Выдача себя за сотрудника</strong></p>
+                <p>Физический доступ в здание путем выдачи себя за доставщика, сантехника, уборщика или нового сотрудника:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Я с ООО \"Почта\", доставка для отдела бухгалтерии»;</li>
+                    <li>«Приехал рабочий для замены замка, вот смета»;</li>
+                    <li>«Я новый IT-специалист, кто может показать офис?»;</li>
+                    <li>Может втереться в доверие и получить доступ к компьютерам.</li>
+                </ul>
+                
+                <p><strong>Quid pro quo (за что-то взамен)</strong></p>
+                <p>Обещание услуги в обмен на информацию:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>«Дай мне пароль, и я исправлю твой компьютер»;</li>
+                    <li>«Поделись доступом, и я помогу с отчетом»;</li>
+                    <li>«Отправь мне реквизиты, и я получу тебе скидку»;</li>
+                    <li>«Расскажи о коллегах, и ты получишь бонус».</li>
+                </ul>
+                
+                <p><strong>Tailgating (внедрение)</strong></p>
+                <p>Физическое проникновение в здание, следуя за сотрудником через входную дверь:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Стоит позади человека у дверей с ключевой картой;</li>
+                    <li>Когда тот открывает дверь, проходит следом;</li>
+                    <li>Может выдать себя за нового сотрудника или гостя;</li>
+                    <li>Получает доступ к компьютерам и документам.</li>
+                </ul>
+                
+                <p><strong>Как защитить себя от социальной инженерии:</strong></p>
+                
+                <p><strong>1. Проверяйте личность</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Если кто-то представляется сотрудником компании, попросите проверить личность через официальный канал;</li>
+                    <li>Перезвоните на официальный номер компании (найдите номер на их сайте, а не просите у звонящего);</li>
+                    <li>Запросите идентификационный номер или другую верификацию;</li>
+                    <li>Не доверяйте ID на экране телефона — их легко подделать.</li>
+                </ul>
+                
+                <p><strong>2. Не торопитесь</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Когда кто-то нажимает на спешку, это признак опасности;</li>
+                    <li>Скажите: «Дайте мне время подумать»;</li>
+                    <li>Положите трубку и позвоните самостоятельно;</li>
+                    <li>Никогда не действуйте в спешке, даже если это кажется срочным.</li>
+                </ul>
+                
+                <p><strong>3. Никогда не сообщайте конфиденциальные данные</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Банк и компании НИКОГДА не просят пароль, PIN или код 2FA;</li>
+                    <li>Не говорите эти данные по телефону, SMS или email;</li>
+                    <li>Если кто-то просит, это мошенник;</li>
+                    <li>Научите детей никогда не давать информацию незнакомцам.</li>
+                </ul>
+                
+                <p><strong>4. Учитесь распознавать манипуляцию</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Обратите внимание на эмоции, которые вызывает сообщение;</li>
+                    <li>Если вы испуганы, взволнованы или рассеяны, особенно внимательны;</li>
+                    <li>Ставьте под сомнение то, что говорят авторитеты;</li>
+                    <li>Проверяйте факты самостоятельно.</li>
+                </ul>
+                
+                <p><strong>5. Культура безопасности в компании</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Сотрудников нужно обучать защите от социальной инженерии;</li>
+                    <li>Установите правила: никогда не давать доступ за пределы офиса;</li>
+                    <li>Никогда не писать пароль на стикерах;</li>
+                    <li>Всегда проверять личность посетителей;</li>
+                    <li>Создавайте безопасную культуру, где люди чувствуют себя комфортно говорить о подозрениях.</li>
+                </ul>
+                
+                <p><strong>6. Физическая безопасность</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Не оставляйте компьютер без присмотра;</li>
+                    <li>Блокируйте компьютер, когда уходите;</li>
+                    <li>Не оставляйте флешки, документы или ID на столе;</li>
+                    <li>Уничтожайте конфиденциальные документы правильно (шредер, не мусорка);</li>
+                    <li>Закрывайте экран во время вввода пароля;</li>
+                    <li>Не подключайте неизвестные флешки или устройства.</li>
+                </ul>
+            </div>
+
+            <div id="wifi-security" class="content-block">
+                <h3><i class="fas fa-wifi"></i> Wi-Fi безопасность</h3>
+                <p>Wi-Fi — это удобный способ подключиться к интернету, но общественные и домашние сети часто недостаточно защищены. Злоумышленник может стоять рядом с вами и перехватывать все ваши данные, если сеть не зашифрована.</p>
+                
+                <p><strong>Угрозы незащищенного Wi-Fi:</strong></p>
+                
+                <p><strong>1. MITM атака (Man-in-the-Middle)</strong></p>
+                <p>Злоумышленник встает посередине между вами и маршрутизатором и перехватывает все данные:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Логины и пароли для разных сервисов;</li>
+                    <li>Сообщения в мессенджерах;</li>
+                    <li>Фотографии и файлы, которые вы загружаете;</li>
+                    <li>Данные банковских карт при онлайн-платежах (если сайт не использует HTTPS);</li>
+                    <li>Все, что вы вводите.</li>
+                </ul>
+                
+                <p><strong>2. Создание поддельной сети (Evil Twin)</strong></p>
+                <p>Мошенник создает Wi-Fi сеть с названием, похожим на оригинальный (например, «McDonald's_Free_WiFi_2» вместо «McDonald's_Free_WiFi»). Когда вы подключаетесь к поддельной сети, он получает доступ ко всему трафику.</p>
+                
+                <p><strong>3. Сниффинг пакетов (Packet Sniffing)</strong></p>
+                <p>Программа на компьютере злоумышленника перехватывает все пакеты данных, передаваемые по Wi-Fi, и анализирует их в поисках конфиденциальной информации.</p>
+                
+                <p><strong>4. SSL Stripping</strong></p>
+                <p>Мошенник перехватывает HTTPS-соединение и перенаправляет вас на незащищенный HTTP вариант сайта. Вы думаете, что защищены, но на самом деле нет.</p>
+                
+                <p><strong>5. Заражение через Wi-Fi</strong></p>
+                <p>Мошенник может использовать уязвимости в маршрутизаторе или операционной системе для загрузки вредоносного ПО на ваш компьютер.</p>
+                
+                <p><strong>Как защитить себя при использовании публичного Wi-Fi:</strong></p>
+                
+                <p><strong>1. Используйте VPN</strong></p>
+                <p>VPN (Virtual Private Network) создает зашифрованный туннель между вашим компьютером и надежным сервером. Все данные передаются через этот туннель, поэтому даже если кто-то перехватит сигнал Wi-Fi, он не сможет прочитать информацию.</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Платные VPN:</strong> ProtonVPN, ExpressVPN, NordVPN (более надежные, не логируют данные);</li>
+                    <li><strong>Бесплатные VPN:</strong> TunnelBear, Hotspot Shield (менее надежные, могут продавать данные);</li>
+                    <li>Включайте VPN перед подключением к общественному Wi-Fi;</li>
+                    <li>Проверьте, что VPN активен, прежде чем передавать конфиденциальные данные.</li>
+                </ul>
+                
+                <p><strong>2. Используйте только HTTPS сайты</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Проверяйте замок в адресной строке;</li>
+                    <li>Адрес должен начинаться с https://, а не http://;</li>
+                    <li>Если сайт не использует HTTPS, не вводите конфиденциальные данные;</li>
+                    <li>Большинство современных браузеров показывают предупреждение на незащищенных сайтах.</li>
+                </ul>
+                
+                <p><strong>3. Отключите автоматическое подключение</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Отключите опцию «Подключаться автоматически» для известных сетей;</li>
+                    <li>Отключите Bluetooth, если вы его не используете;</li>
+                    <li>Отключите функцию обнаружения устройств;</li>
+                    <li>Это мешает злоумышленнику автоматически подключиться к вашему устройству.</li>
+                </ul>
+                
+                <p><strong>4. Не используйте общественный Wi-Fi для важных операций</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Избегайте входа в банковские приложения;</li>
+                    <li>Не вводите данные кредитных карт;</li>
+                    <li>Не получайте доступ к работным файлам и документам;</li>
+                    <li>Не вводите пароли для важных аккаунтов;</li>
+                    <li>Если нужно срочно, используйте VPN.</li>
+                </ul>
+                
+                <p><strong>5. Проверяйте названия сетей</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Попросите у персонала правильное название Wi-Fi;</li>
+                    <li>Будьте осторожны с похожими названиями;</li>
+                    <li>Если вы не уверены, используйте мобильное соединение;</li>
+                    <li>Помните, что официальные организации обычно объявляют имя и пароль Wi-Fi.</li>
+                </ul>
+                
+                <p><strong>6. Используйте брандмауэр</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Включите встроенный брандмауэр вашей операционной системы;</li>
+                    <li>Он блокирует входящие соединения с неизвестными источниками;</li>
+                    <li>При подключении к новой сети браузер может попросить разрешение — разрешайте только для частных сетей.</li>
+                </ul>
+                
+                <p><strong>Как защитить домашний Wi-Fi:</strong></p>
+                
+                <p><strong>1. Стандарт шифрования</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Используйте <strong>WPA3</strong> (новейший, самый безопасный);</li>
+                    <li>Если WPA3 не доступен, используйте <strong>WPA2</strong>;</li>
+                    <li>Избегайте WEP — это устаревший и небезопасный стандарт;</li>
+                    <li>Не используйте «открытую сеть без пароля».</li>
+                </ul>
+                
+                <p><strong>2. Сильный пароль Wi-Fi</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Используйте длинный пароль (минимум 20 символов);</li>
+                    <li>Комбинируйте букв, цифры и символы;</li>
+                    <li>Не используйте словарные слова или даты;</li>
+                    <li>Пример: «Tr0p!cal$unset#HomeNet2025».</li>
+                </ul>
+                
+                <p><strong>3. Смена стандартного пароля администратора</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>По умолчанию маршрутизаторы имеют стандартный пароль (admin/admin);</li>
+                    <li>Зайдите в админ-панель (обычно 192.168.1.1 или 192.168.0.1);</li>
+                    <li>Смените пароль администратора на уникальный;</li>
+                    <li>Это помешает соседям или злоумышленникам изменить настройки Wi-Fi.</li>
+                </ul>
+                
+                <p><strong>4. Скрывайте SSID (опционально)</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Вы можете скрыть название сети (SSID) в админ-панели маршрутизатора;</li>
+                    <li>Сеть не будет видна в списке доступных сетей;</li>
+                    <li>Это не очень эффективно (можно найти по трафику), но добавляет немного безопасности;</li>
+                    <li>Удобство: вам нужно вручную вводить название и пароль при подключении.</li>
+                </ul>
+                
+                <p><strong>5. Создайте гостевую сеть</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Откройте админ-панель маршрутизатора и создайте гостевую сеть;</li>
+                    <li>Гость получит доступ в интернет, но не сможет получить доступ к вашим компьютерам и файлам;</li>
+                    <li>Это отделит личные устройства от чужого трафика;</li>
+                    <li>Установите отдельный пароль для гостевой сети.</li>
+                </ul>
+                
+                <p><strong>6. Обновляйте прошивку маршрутизатора</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Производители выпускают обновления для закрытия уязвимостей;</li>
+                    <li>Периодически проверяйте наличие обновлений в админ-панели;</li>
+                    <li>Включите автоматические обновления, если это опция;</li>
+                    <li>Устаревшая прошивка — это открытая дверь для хакеров.</li>
+                </ul>
+                
+                <p><strong>7. Отключите WPS</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>WPS (Wi-Fi Protected Setup) позволяет подключиться нажатием кнопки;</li>
+                    <li>Это удобно, но небезопасно — можно взломать перебором;</li>
+                    <li>Отключите WPS в админ-панели маршрутизатора;</li>
+                    <li>Требуйте пароль для подключения новых устройств.</li>
+                </ul>
+                
+                <p><strong>8. Регулярная проверка подключенных устройств</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Периодически проверяйте, какие устройства подключены к Wi-Fi;</li>
+                    <li>Если видите неизвестное устройство, отключите его или смените пароль Wi-Fi;</li>
+                    <li>Рассмотрите использование MAC-фильтра для разрешения только известных устройств;</li>
+                    <li>Помните MAC-адреса ваших устройств.</li>
+                </ul>
+            </div>
+
+            <div id="malware" class="content-block">
+                <h3><i class="fas fa-virus"></i> Вредоносное ПО</h3>
+                <p>Вредоносное программное обеспечение (malware) — это специально созданное ПО, которое наносит вред вашему компьютеру, мобильному устройству или данным. Оно может воровать информацию, шифровать файлы за выкуп, показывать рекламу, замедлять работу или полностью вывести устройство из строя.</p>
+                
+                <p><strong>Типы вредоносного ПО:</strong></p>
+                
+                <p><strong>1. Вирусы</strong></p>
+                <p>Программы, которые присоединяются к другим файлам или программам и воспроизводят себя при запуске зараженного файла. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Требуют запуска инфицированного файла для активации;</li>
+                    <li>Могут повредить или удалить файлы;</li>
+                    <li>Распространяются через флешки, email, скачивания;</li>
+                    <li>Примеры: ILOVEYOU (2000), WannaCry (2017).</li>
+                </ul>
+                
+                <p><strong>2. Черви (Worms)</strong></p>
+                <p>Вредоносные программы, которые самостоятельно распространяются по компьютерной сети без вмешательства пользователя. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Могут распространяться через email, мессенджеры, общие папки;</li>
+                    <li>Не требуют запуска инфицированного файла;</li>
+                    <li>Могут замедлить сеть из-за огромного количества копий;</li>
+                    <li>Примеры: Morris Worm (1988), Conficker (2008).</li>
+                </ul>
+                
+                <p><strong>3. Трояны (Trojans)</strong></p>
+                <p>Вредоносные программы, которые маскируются под полезное ПО, чтобы обмануть пользователя. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Выглядят как обычная программа (видеоплеер, архиватор, утилита);</li>
+                    <li>При установке открывают «черный ход» для злоумышленника;</li>
+                    <li>Могут скачивать и устанавливать другое вредоносное ПО;</li>
+                    <li>Могут передать полный контроль хакеру над вашим компьютером;</li>
+                    <li>Примеры: Zeus, SpyEye, Emotet.</li>
+                </ul>
+                
+                <p><strong>4. Шпионское ПО (Spyware)</strong></p>
+                <p>Программы, которые скрытно собирают информацию о вас и ваших действиях. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Отслеживают введенные пароли (кейлоггеры);</li>
+                    <li>Записывают историю браузера и переписку;</li>
+                    <li>Собирают информацию о банковских операциях;</li>
+                    <li>Передают данные злоумышленнику;</li>
+                    <li>Часто устанавливаются вместе с другим ПО;</li>
+                    <li>Примеры: Spybot, DarkComet, RemoteControl.</li>
+                </ul>
+                
+                <p><strong>5. Шифровальщики (Ransomware)</strong></p>
+                <p>Самое опасное вредоносное ПО — шифрует все ваши файлы и требует деньги за их разблокировку. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Блокирует доступ к вашим файлам с помощью криптографии;</li>
+                    <li>Требует выкуп (обычно 100-10000$ в крипто);</li>
+                    <li>Даже если вы заплатите, гарантии расшифровки нет;</li>
+                    <li>Распространяется через фишинг, уязвимости, подозрительные ссылки;</li>
+                    <li>Примеры: WannaCry, Petya, Ryuk, LockBit.</li>
+                </ul>
+                
+                <p><strong>6. Рекламное ПО (Adware)</strong></p>
+                <p>Программы, которые показывают неконтролируемую рекламу. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Перенаправляют вас на рекламные сайты;</li>
+                    <li>Заполняют экран всплывающей рекламой;</li>
+                    <li>Замедляют работу браузера и компьютера;</li>
+                    <li>Отслеживают ваши интересы для целевой рекламы;</li>
+                    <li>Часто устанавливаются вместе с бесплатным ПО.</li>
+                </ul>
+                
+                <p><strong>7. Руткиты (Rootkits)</strong></p>
+                <p>Глубокие вредоносные программы, которые скрывают следы своей активности. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Получают доступ на уровне операционной системы;</li>
+                    <li>Скрывают свое присутствие от антивирусов;</li>
+                    <li>Позволяют удаленный контроль над компьютером;</li>
+                    <li>Очень сложно удалить;</li>
+                    <li>Примеры: ZeroAccess, Necurs, Alureon.</li>
+                </ul>
+                
+                <p><strong>8. Кейлоггеры (Keyloggers)</strong></p>
+                <p>Программы, которые записывают все, что вы печатаете на клавиатуре. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Записывают логины и пароли;</li>
+                    <li>Передают записи злоумышленнику;</li>
+                    <li>Могут быть программными или аппаратными;</li>
+                    <li>Часто используются в комбинации с другим вредоносным ПО.</li>
+                </ul>
+                
+                <p><strong>9. Боты и зомби-сети (Botnets)</strong></p>
+                <p>Зараженные компьютеры, которые контролируются злоумышленником и используются для: атак на сайты (DDoS), спама, майнинга криптовалют, распространения вредоноса. Особенности:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Вы можете не заметить, что ваш ПК заражен;</li>
+                    <li>Компьютер замедляется из-за нагрузки;</li>
+                    <li>Может использоваться для совершения преступлений;</li>
+                    <li>Примеры: Conficker, Dridex, Mirai.</li>
+                </ul>
+                
+                <p><strong>Как вредоносное ПО попадает на ваш компьютер:</strong></p>
+                
+                <p><strong>1. Скачивание с ненадежных сайтов</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Торрент-сайты, sytes с пиратским контентом часто содержат вредонос;</li>
+                    <li>Поддельные сайты разработчиков (в поисковой выдаче реклама часто ведет на подделку);</li>
+                    <li>Сайты с крякованным ПО;</li>
+                    <li>Даже официальные сайты могут быть взломаны и распространять вредонос.</li>
+                </ul>
+                
+                <p><strong>2. Email и вложения</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Письма якобы от банков с вложением;</li>
+                    <li>Счета и отчеты с вредоносным кодом;</li>
+                    <li>Скрытый код в документах Word и Excel;</li>
+                    <li>Архивы с вредоносом вместо обещанных файлов.</li>
+                </ul>
+                
+                <p><strong>3. Уязвимости в ПО</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Старые версии Windows, браузеры, Flash Player содержат известные уязвимости;</li>
+                    <li>Специально разработанные сайты могут использовать эти уязвимости;</li>
+                    <li>Просто посещение такого сайта может заразить ваш ПК;</li>
+                    <li>Отсутствие обновлений — главная причина заражения.</li>
+                </ul>
+                
+                <p><strong>4. Установка вместе с другим ПО</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Бесплатные программы часто содержат рекламное ПО;</li>
+                    <li>Во время установки нужно внимательно читать условия;</li>
+                    <li>Часто есть опция установки дополнительного ПО (обычно в стандартной установке);</li>
+                    <li>Выбирайте «Пользовательскую установку» и отключайте ненужное.</li>
+                </ul>
+                
+                <p><strong>5. USB флешки и носители</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Найденная флешка может содержать вредонос;</li>
+                    <li>Если вставить её и автозапуск включен, может произойти заражение;</li>
+                    <li>Флешка от неизвестного человека опасна;</li>
+                    <li>Никогда не подключайте неизвестные устройства.</li>
+                </ul>
+                
+                <p><strong>Как защитить себя от вредоносного ПО:</strong></p>
+                
+                <p><strong>1. Регулярные обновления</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Обновляйте ОС (Windows, macOS, Linux);</li>
+                    <li>Обновляйте браузер;</li>
+                    <li>Обновляйте установленные приложения;</li>
+                    <li>Включите автоматические обновления — это критически важно;</li>
+                    <li>Обновления закрывают уязвимости, которые используют вредоносы.</li>
+                </ul>
+                
+                <p><strong>2. Установите антивирусное ПО</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Windows Defender</strong> (встроен в Windows 10/11) — хороший выбор;</li>
+                    <li><strong>Avast, AVG</strong> — бесплатные и платные версии;</li>
+                    <li><strong>Kaspersky, Norton</strong> — платные, мощные;</li>
+                    <li><strong>Bitdefender</strong> — высокий рейтинг защиты;</li>
+                    <li>Включите сканирование в реальном времени;</li>
+                    <li>Обновляйте сигнатуры вирусов регулярно.</li>
+                </ul>
+                
+                <p><strong>3. Никогда не скачивайте из ненадежных источников</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Скачивайте с официальных сайтов разработчиков;</li>
+                    <li>Избегайте торрентов и пиратского контента;</li>
+                    <li>Используйте магазины приложений (Microsoft Store, App Store);</li>
+                    <li>Проверяйте отзывы и рейтинги приложений;</li>
+                    <li>Если программа кажется слишком хорошей, чтобы быть правдой, это вредонос.</li>
+                </ul>
+                
+                <p><strong>4. Будьте осторожны с email вложениями</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Не открывайте вложения от неизвестных отправителей;</li>
+                    <li>Даже знакомый адрес может быть скомпрометирован;</li>
+                    <li>Избегайте файлов .exe, .bat, .vbs, .scr;</li>
+                    <li>Будьте осторожны с .doc и .xlsx, которые могут содержать вредоносные макросы;</li>
+                    <li>Если вы не ожидали вложение, не открывайте его.</li>
+                </ul>
+                
+                <p><strong>5. Используйте правильные разрешения</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Не используйте учетную запись администратора для повседневной работы;</li>
+                    <li>Используйте учетную запись обычного пользователя;</li>
+                    <li>Вредонос без прав администратора не может поразить всю систему;</li>
+                    <li>При установке программы система попросит пароль администратора — это хорошая защита.</li>
+                </ul>
+                
+                <p><strong>6. Резервные копии</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Делайте резервные копии важных файлов;</li>
+                    <li>Используйте внешний жесткий диск или облачное хранилище;</li>
+                    <li>В случае заражения вредоносом типа ransomware вы сможете восстановить файлы;</li>
+                    <li>Отключайте резервную копию от компьютера после синхронизации.</li>
+                </ul>
+                
+                <p><strong>7. Используйте брандмауэр</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Включите встроенный брандмауэр Windows;</li>
+                    <li>Для Mac используйте Security Settings;</li>
+                    <li>Брандмауэр блокирует входящие соединения от вредоносов;</li>
+                    <li>Он не повредит нормальной работе интернета.</li>
+                </ul>
+                
+                <p><strong>8. Мониторинг сетевой активности</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Проверяйте сетевую активность в диспетчере задач;</li>
+                    <li>Если неизвестный процесс использует интернет, это может быть вредонос;</li>
+                    <li>Используйте инструменты вроде Wireshark для анализа сетевого трафика;</li>
+                    <li>Необычная активность должна вас насторожить.</li>
+                </ul>
+                
+                <p><strong>Что делать, если вы заражены вредоносом:</strong></p>
+                
+                <ol style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Отключитесь от интернета, чтобы остановить распространение;</li>
+                    <li>Запустите полное сканирование антивируса;</li>
+                    <li>Удалите все обнаруженные угрозы;</li>
+                    <li>Смените все пароли (особенно банковские) с другого компьютера;</li>
+                    <li>Проверьте банковские операции на предмет мошенничества;</li>
+                    <li>Если вредонос очень серьезен, переустановите ОС;</li>
+                    <li>Восстановите файлы из резервной копии;</li>
+                    <li>Рассмотрите помощь специалиста по безопасности.</li>
+                </ol>
+            </div>
+
+            <div id="mobile-security" class="content-block">
+                <h3><i class="fas fa-mobile"></i> Мобильная безопасность</h3>
+                <p>Мобильные устройства хранят огромное количество личной информации: контакты, переписка, фотографии, банковские приложения, пароли. Телефон в наше время — это полный портрет человека, и его защита критически важна. К сожалению, мобильные ОС (Android и iOS) имеют свои уязвимости.</p>
+                
+                <p><strong>Угрозы мобильной безопасности:</strong></p>
+                
+                <p><strong>1. Вредоносные приложения</strong></p>
+                <p>Приложения, которые выглядят как обычные, но содержат вредоносный код. Они могут:</p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Воровать контакты и сообщения;</li>
+                    <li>Записывать звонки и окружающие звуки;</li>
+                    <li>Отслеживать местоположение;</li>
+                    <li>Имитировать SMS-сообщения для выполнения платежей;</li>
+                    <li>Получать доступ к фото и видео;</li>
+                    <li>Отправлять спам-сообщения;</li>
+                    <li>Майнить криптовалюту на производительности вашего телефона.</li>
+                </ul>
+                
+                <p><strong>2. Фишинг и социальная инженерия</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>SMS с поддельными ссылками на банковские сайты;</li>
+                    <li>Сообщения якобы от популярных приложений о необходимости обновления;</li>
+                    <li>Звонки якобы от оператора мобильной связи;</li>
+                    <li>Мессенджеры с просьбой отправить коды подтверждения.</li>
+                </ul>
+                
+                <p><strong>3. Отсутствие защиты данных</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Незащищенный Wi-Fi без пароля;</li>
+                    <li>Общие папки без шифрования;</li>
+                    <li>Отсутствие блокировки экрана;</li>
+                    <li>Хранение пароля на рабочем столе телефона.</li>
+                </ul>
+                
+                <p><strong>4. Переполнение буфера и уязвимости ОС</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Устаревшие версии Android часто содержат известные уязвимости;</li>
+                    <li>Специально созданные приложения или сайты могут использовать эти уязвимости;</li>
+                    <li>Регулярные обновления ОС закрывают эти дыры.</li>
+                </ul>
+                
+                <p><strong>5. Синхронизация и облачные сервисы</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Если ваш аккаунт Google или iCloud скомпрометирован, доступны все синхронизированные данные;</li>
+                    <li>Фотографии, контакты, календари часто автоматически синхронизируются;</li>
+                    <li>Слабый пароль к аккаунту может привести к потере всех данных.</li>
+                </ul>
+                
+                <p><strong>6. Публичные зарядные устройства</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Общественные USB-зарядки в аэропортах и кафе могут быть скомпрометированы;</li>
+                    <li>Через зарядку хакер может загрузить вредонос на ваш телефон;</li>
+                    <li>Лучше используйте свою зарядку или дополнительный аккумулятор (power bank).</li>
+                </ul>
+                
+                <p><strong>7. SIM-card Swapping</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Мошенник выдает себя за вас у оператора мобильной связи;</li>
+                    <li>Просит переоформить вашу SIM карту на его устройство;</li>
+                    <li>После этого он получает все SMS с кодами 2FA и может получить доступ к вашим аккаунтам;</li>
+                    <li>Это опасная атака, требует внимания.</li>
+                </ul>
+                
+                <p><strong>Как защитить свой телефон:</strong></p>
+                
+                <p><strong>1. Установите блокировку экрана</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>PIN-код:</strong> 6+ цифр, минимум 1000000 комбинаций;</li>
+                    <li><strong>Графический ключ:</strong> не менее 4 точек, менее безопасен, чем PIN;</li>
+                    <li><strong>Биометрия:</strong> отпечаток пальца или распознавание лица (самый удобный);</li>
+                    <li>Используйте сильную комбинацию: биометрия + PIN;</li>
+                    <li>Включите автоблокировку через 5-10 минут неиспользования.</li>
+                </ul>
+                
+                <p><strong>2. Обновляйте ОС и приложения</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Включите автоматические обновления в настройках;</li>
+                    <li>Проверяйте наличие обновлений раз в неделю вручную;</li>
+                    <li>Обновления закрывают уязвимости, которые используют вредоносы;</li>
+                    <li>Не откладывайте обновления, даже если они требуют перезагрузки.</li>
+                </ul>
+                
+                <p><strong>3. Скачивайте приложения только из официальных магазинов</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li><strong>Android:</strong> Google Play Store (официальный магазин);</li>
+                    <li><strong>iOS:</strong> App Store (только источник для iOS);</li>
+                    <li>Избегайте sideloading и неофициальных магазинов приложений;</li>
+                    <li>Проверяйте отзывы, рейтинги и количество скачиваний приложения;</li>
+                    <li>Проверьте разработчика — ищите официальные аккаунты;</li>
+                    <li>Если приложение кажется подозрительным, не устанавливайте его.</li>
+                </ul>
+                
+                <p><strong>4. Управляйте разрешениями приложений</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Перейдите в Настройки > Приложения > Разрешения;</li>
+                    <li>Проверьте, какие приложения имеют доступ к:</li>
+                    <ul style="color: #a0aec0; margin-left: 2rem;">
+                        <li>Местоположению (GPS);</li>
+                        <li>Камере;</li>
+                        <li>Микрофону;</li>
+                        <li>Контактам;</li>
+                        <li>SMS и звонкам;</li>
+                        <li>Файлам и памяти.</li>
+                    </ul>
+                    <li>Запрещайте разрешения, которые не нужны приложению;</li>
+                    <li>Например, калькулятору не нужен доступ к микрофону;</li>
+                    <li>Регулярно проверяйте разрешения, особенно после обновлений.</li>
+                </ul>
+                
+                <p><strong>5. Используйте сильный пароль для аккаунта Google/Apple ID</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Аккаунт Google или Apple ID — ключ ко всему на вашем телефоне;</li>
+                    <li>Используйте пароль минимум 16 символов;</li>
+                    <li>Комбинируйте буквы, цифры и символы;</li>
+                    <li>Включите 2FA для аккаунта (не просто SMS, а приложение-генератор);</li>
+                    <li>Проверяйте активные сессии и подключенные устройства;</li>
+                    <li>Удаляйте с аккаунта неизвестные устройства.</li>
+                </ul>
+                
+                <p><strong>6. Отключите Bluetooth и Wi-Fi, когда не используете</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Bluetooth может быть использован для атак типа Bluebugging;</li>
+                    <li>Отключите автоматическое подключение к сетям;</li>
+                    <li>Забудьте о ненужных сетях в настройках;</li>
+                    <li>Не подключайтесь к неизвестным Bluetooth-устройствам;</li>
+                    <li>Отключите видимость Bluetooth, если она не нужна.</li>
+                </ul>
+                
+                <p><strong>7. Установите антивирусное ПО (опционально)</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Android встроенной защиты может быть недостаточно;</li>
+                    <li>Антивирусные приложения: Kaspersky, Avast, Norton;</li>
+                    <li>Выбирайте приложения от известных компаний;</li>
+                    <li>iPhone обычно не нуждается в антивирусе благодаря архитектуре iOS.</li>
+                </ul>
+                
+                <p><strong>8. Безопасно удаляйте и восстанавливайте данные</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Перед продажей или отдачей телефона сделайте полный сброс (Factory Reset);</li>
+                    <li>Для Android: Настройки > Система > Сбросить > Удалить все данные;</li>
+                    <li>Для iOS: Настройки > Основные > Сброс > Стереть контент и настройки;</li>
+                    <li>Убедитесь, что все данные удалены (может потребоваться несколько проходов);</li>
+                    <li>Рассмотрите физическое уничтожение SSD, если устройство содержало очень важные данные.</li>
+                </ul>
+                
+                <p><strong>9. Защита от SIM-card Swapping</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Установите PIN-код для вашей SIM карты (обычно 0000 или 1234 по умолчанию);</li>
+                    <li>Свяжитесь с оператором мобильной связи и попросите установить PIN;</li>
+                    <li>Используйте 2FA на основе приложения вместо SMS;</li>
+                    <li>Не публикуйте номер телефона в интернете;</li>
+                    <li>Будьте осторожны с фишингом, который нацелен на получение вашего номера.</li>
+                </ul>
+                
+                <p><strong>10. Резервное копирование и восстановление</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Регулярно создавайте резервные копии:</li>
+                    <ul style="color: #a0aec0; margin-left: 2rem;">
+                        <li>Google Drive для Android;</li>
+                        <li>iCloud для iOS;</li>
+                        <li>Локальное резервное копирование на компьютер (более безопасно).</li>
+                    </ul>
+                    <li>В случае заражения вредоносом можно восстановить устройство;</li>
+                    <li>Сохраняйте важные фото и видео в отдельном месте;</li>
+                    <li>Если облачное хранилище скомпрометировано, восстановление может содержать вредонос.</li>
+                </ul>
+                
+                <p><strong>11. Физическая безопасность</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Не оставляйте телефон без присмотра на общественных местах;</li>
+                    <li>Не одалживайте телефон незнакомцам;</li>
+                    <li>Прикройте экран при вводе пароля;</li>
+                    <li>Не оставляйте телефон включенным и разблокированным;</li>
+                    <li>Используйте кейс и защитное стекло.</li>
+                </ul>
+                
+                <p><strong>12. Мобильное банкинг</strong></p>
+                <ul style="color: #a0aec0; margin-left: 1rem;">
+                    <li>Скачивайте приложение банка только с официального сайта или магазина;</li>
+                    <li>Проверьте, что приложение подписано вашим банком;</li>
+                    <li>Используйте сильный пароль и 2FA для банковского приложения;</li>
+                    <li>Не переходите по ссылкам из SMS якобы от банка;</li>
+                    <li>Регулярно проверяйте транзакции в приложении;</li>
+                    <li>Если заметили подозрительную активность, немедленно заблокируйте карту;</li>
+                    <li>Используйте мобильный банкинг только на личном устройстве с хорошей защитой.</li>
+                </ul>
+            </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+            <path fill="#1a202c" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"></path>
+        </svg>
+    </div>
+    <footer>
+        <div class="footer-blob"></div>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4 data-i18n="footer_title">CyberAware</h4>
+                <p data-i18n="footer_description">Образовательная платформа по кибербезопасности для студентов</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_quick_links">Быстрые ссылки</h4>
+                <ul>
+                    <li><a href="threats.html" data-i18n="nav_threats">Угрозы</a></li>
+                    <li><a href="learning.html" data-i18n="nav_learning">Обучение</a></li>
+                    <li><a href="tips.html" data-i18n="nav_tips">Советы</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_contacts">Контакты</h4>
+                <p><span data-i18n="footer_name">Имя</span>: <strong>Zagvozdina Alexandra</strong></p>
+                <p><span data-i18n="footer_phone">Телефон</span>: <a href="tel:+77783682222">+7 778 368 2222</a></p>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n="footer_copyright">&copy; 2026 CyberAware. Защита в цифровом мире. Образование для безопасного завтра.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Установка прогресса для всего обучающего материала
+        function updateProgress() {
+            document.getElementById('progress-fill').style.width = '100%';
+            document.getElementById('progress-percent').textContent = '100%';
+        }
+
+        // Accordion toggle
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('open');
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>
