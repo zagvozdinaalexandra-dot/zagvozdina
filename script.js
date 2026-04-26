@@ -37,6 +37,19 @@ function getCurrentLang() {
     return savedLang === 'en' ? 'en' : 'ru';
 }
 
+const CLIENT_NAME_REGEX = /^[A-Za-zА-Яа-яЁё\s-]{2,40}$/;
+const CLIENT_EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CLIENT_PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+function normalizeNameInput(value) {
+    return String(value).trim().replace(/\s{2,}/g, ' ');
+}
+
+function capitalizeFirstLetter(value) {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
 function t(key, fallback) {
     const lang = getCurrentLang();
     if (typeof translations !== 'undefined' && translations[lang] && translations[lang][key]) {
@@ -762,10 +775,34 @@ requestAnimationFrame(raf);
             const passwordInput = document.getElementById('register-password');
             if (!firstNameInput || !lastNameInput || !emailInput || !passwordInput) return;
 
-            const firstName = firstNameInput.value.trim();
-            const lastName = lastNameInput.value.trim();
-            const email = emailInput.value.trim();
+            const firstName = capitalizeFirstLetter(normalizeNameInput(firstNameInput.value));
+            const lastName = capitalizeFirstLetter(normalizeNameInput(lastNameInput.value));
+            const email = emailInput.value.trim().toLowerCase();
             const password = passwordInput.value;
+
+            firstNameInput.value = firstName;
+            lastNameInput.value = lastName;
+            emailInput.value = email;
+
+            if (!CLIENT_NAME_REGEX.test(firstName) || !CLIENT_NAME_REGEX.test(lastName)) {
+                if (registerError) registerError.textContent = 'Имя и фамилия: 2-40 символов, только буквы, пробел и дефис.';
+                return;
+            }
+
+            if (!/^[A-ZА-ЯЁ]/.test(firstName) || !/^[A-ZА-ЯЁ]/.test(lastName)) {
+                if (registerError) registerError.textContent = 'Имя и фамилия должны начинаться с заглавной буквы.';
+                return;
+            }
+
+            if (email.length > 254 || !CLIENT_EMAIL_REGEX.test(email)) {
+                if (registerError) registerError.textContent = 'Введите корректный email (до 254 символов).';
+                return;
+            }
+
+            if (!CLIENT_PASSWORD_REGEX.test(password)) {
+                if (registerError) registerError.textContent = 'Пароль: минимум 8 символов, 1 заглавная буква и 1 цифра.';
+                return;
+            }
 
             try {
                 const response = await fetch('/api/auth/register', {

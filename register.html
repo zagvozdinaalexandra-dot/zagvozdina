@@ -68,7 +68,7 @@
         }
 
         .auth-form {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(255, 250, 240, 0.95) 0%, rgba(252, 245, 230, 0.95) 100%);
             padding: 3rem 2.5rem;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
@@ -167,19 +167,19 @@
                     <form id="register-form-element">
                         <div class="form-group">
                             <label>Имя</label>
-                            <input id="register-first-name" type="text" placeholder="Иван" required>
+                            <input id="register-first-name" type="text" placeholder="Иван" maxlength="40" pattern="[A-Za-zА-Яа-яЁё\\s-]{2,40}" required>
                         </div>
                         <div class="form-group">
                             <label>Фамилия</label>
-                            <input id="register-last-name" type="text" placeholder="Иванов" required>
+                            <input id="register-last-name" type="text" placeholder="Иванов" maxlength="40" pattern="[A-Za-zА-Яа-яЁё\\s-]{2,40}" required>
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input id="register-email" type="email" placeholder="example@mail.com" required>
+                            <input id="register-email" type="email" placeholder="example@mail.com" maxlength="254" required>
                         </div>
                         <div class="form-group">
                             <label>Пароль</label>
-                            <input id="register-password" type="password" placeholder="••••••••" required>
+                            <input id="register-password" type="password" placeholder="••••••••" minlength="8" required>
                         </div>
                         <button type="submit" class="btn-submit">Создать аккаунт</button>
                     </form>

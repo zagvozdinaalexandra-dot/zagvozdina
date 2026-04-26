@@ -6,8 +6,21 @@ const { createClient } = require('@supabase/supabase-js');
 const router = express.Router();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
+const NAME_REGEX = /^[A-Za-zА-Яа-яЁё\s-]{2,40}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+const MAX_EMAIL_LENGTH = 254;
+
+function normalizeName(name) {
+  return String(name).trim().replace(/\s{2,}/g, ' ');
+}
+
+function startsWithUppercase(value) {
+  return /^[A-ZА-ЯЁ]/.test(value);
+}
+
 function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return EMAIL_REGEX.test(email);
 }
 
 function getTokenFromHeader(req) {
@@ -29,21 +42,29 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'First name, last name, email and password are required' });
     }
 
-    if (!isValidEmail(email)) {
-      return res.status(400).json({ message: 'Invalid email format' });
-    }
+    const normalizedFirstName = normalizeName(firstName);
+    const normalizedLastName = normalizeName(lastName);
+    const normalizedEmail = String(email).toLowerCase().trim();
 
-    if (password.length < 8) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters' });
-    }
-
-    const normalizedFirstName = firstName.trim();
-    const normalizedLastName = lastName.trim();
     if (!normalizedFirstName || !normalizedLastName) {
       return res.status(400).json({ message: 'First name and last name cannot be empty' });
     }
 
-    const normalizedEmail = email.toLowerCase().trim();
+    if (!NAME_REGEX.test(normalizedFirstName) || !NAME_REGEX.test(normalizedLastName)) {
+      return res.status(400).json({ message: 'First name and last name must be 2-40 chars and contain only letters, spaces or hyphens' });
+    }
+
+    if (!startsWithUppercase(normalizedFirstName) || !startsWithUppercase(normalizedLastName)) {
+      return res.status(400).json({ message: 'First name and last name must start with an uppercase letter' });
+    }
+
+    if (normalizedEmail.length > MAX_EMAIL_LENGTH || !isValidEmail(normalizedEmail)) {
+      return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    if (!PASSWORD_REGEX.test(String(password))) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters and include 1 uppercase letter and 1 digit' });
+    }
     const { data: existingUser, error: existingUserError } = await supabase
       .from('users')
       .select('id')
