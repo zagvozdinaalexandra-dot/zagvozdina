@@ -350,6 +350,81 @@ body.drawer-open {
     margin-top: 2rem;
 }
 
+.trust-insights-section {
+    padding: 2rem 5% 4rem;
+}
+
+.trust-insights-card {
+    max-width: 1080px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    padding: 1.5rem;
+    animation: fadeIn 0.6s ease;
+}
+
+.trust-insights-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.trust-insights-head h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.45rem;
+}
+
+.trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(0, 168, 255, 0.12);
+    color: #0369a1;
+    font-weight: 600;
+    font-size: 0.82rem;
+}
+
+.trust-insights-subtitle {
+    color: #64748b;
+    margin: 0.6rem 0 1rem;
+}
+
+.trust-insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.9rem;
+}
+
+.trust-item {
+    background: #f8fafc;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    padding: 0.9rem;
+}
+
+.trust-item h4 {
+    margin: 0 0 0.35rem;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.trust-item p {
+    margin: 0;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.trust-item-wide {
+    grid-column: span 2;
+}
+
 .stat-card {
     background: rgba(255, 255, 255, 0.10);
     backdrop-filter: blur(20px);
@@ -707,6 +782,10 @@ body.drawer-open {
 
     .features-grid, .teach-grid, .benefits-container {
         grid-template-columns: 1fr;
+    }
+
+    .trust-item-wide {
+        grid-column: span 1;
     }
 
     .cta-section {

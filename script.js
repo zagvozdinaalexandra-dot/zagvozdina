@@ -32,6 +32,149 @@ function readUserProfileFromStorage() {
     }
 }
 
+function getCurrentLang() {
+    const savedLang = localStorage.getItem('cyberaware_lang');
+    return savedLang === 'en' ? 'en' : 'ru';
+}
+
+function t(key, fallback) {
+    const lang = getCurrentLang();
+    if (typeof translations !== 'undefined' && translations[lang] && translations[lang][key]) {
+        return translations[lang][key];
+    }
+    return fallback;
+}
+
+function buildLearningInsight(score, totalQuestions) {
+    if (!Number.isFinite(score) || !Number.isFinite(totalQuestions) || totalQuestions <= 0) {
+        return {
+            level: t('trust_level_unknown', 'Не определен'),
+            nextStep: t('trust_next_step_default', 'Пройдите тест, чтобы получить персональную рекомендацию.'),
+            recommendations: [t('rec_no_data_1', 'Начните с раздела "Угрозы" и базовых правил.')],
+        };
+    }
+
+    const ratio = score / totalQuestions;
+    if (ratio >= 0.85) {
+        return {
+            level: t('level_advanced', 'Продвинутый'),
+            nextStep: t('next_step_advanced', 'Перейдите к практическим сценариям фишинга и закрепите навыки.'),
+            recommendations: [
+                t('rec_advanced_1', 'Пройдите мини-тренажер "Фишинг или нет?"'),
+                t('rec_advanced_2', 'Изучите раздел "Советы" и примените 2FA в важных сервисах'),
+                t('rec_advanced_3', 'Повторите тест через 7 дней для контроля результата'),
+            ],
+        };
+    }
+
+    if (ratio >= 0.6) {
+        return {
+            level: t('level_intermediate', 'Средний'),
+            nextStep: t('next_step_intermediate', 'Укрепите слабые места: фишинг, пароли и безопасные привычки.'),
+            recommendations: [
+                t('rec_intermediate_1', 'Повторите материалы в разделе "Обучение"'),
+                t('rec_intermediate_2', 'Проверьте и обновите пароли до уникальных'),
+                t('rec_intermediate_3', 'Включите двухфакторную аутентификацию'),
+            ],
+        };
+    }
+
+    return {
+        level: t('level_beginner', 'Начальный'),
+        nextStep: t('next_step_beginner', 'Начните с основ кибербезопасности и пройдите тест повторно.'),
+        recommendations: [
+            t('rec_beginner_1', 'Изучите раздел "Угрозы" с примерами атак'),
+            t('rec_beginner_2', 'Пройдите базовые модули в "Обучение"'),
+            t('rec_beginner_3', 'Потренируйтесь на мини-тренажере перед повторным тестом'),
+        ],
+    };
+}
+
+function buildSevenDayPlan(level) {
+    if (level === t('level_advanced', 'Продвинутый')) {
+        return [
+            t('plan_advanced_d1', 'День 1: Пройдите мини-тренажер 3 раза подряд без ошибок'),
+            t('plan_advanced_d2', 'День 2: Проверьте 2FA во всех ключевых аккаунтах'),
+            t('plan_advanced_d3', 'День 3: Обновите пароли на 3 важных сервисах'),
+            t('plan_advanced_d4', 'День 4: Повторите раздел "Советы" и сохраните чеклист'),
+            t('plan_advanced_d5', 'День 5: Отработайте распознавание подозрительных доменов'),
+            t('plan_advanced_d6', 'День 6: Проведите мини-аудит личной цифровой гигиены'),
+            t('plan_advanced_d7', 'День 7: Пересдайте тест и сравните динамику'),
+        ];
+    }
+
+    if (level === t('level_intermediate', 'Средний')) {
+        return [
+            t('plan_intermediate_d1', 'День 1: Повторите тему "Фишинг"'),
+            t('plan_intermediate_d2', 'День 2: Усильте пароли и включите менеджер паролей'),
+            t('plan_intermediate_d3', 'День 3: Включите 2FA в почте и мессенджерах'),
+            t('plan_intermediate_d4', 'День 4: Пройдите мини-тренажер и разберите ошибки'),
+            t('plan_intermediate_d5', 'День 5: Повторите раздел "Угрозы"'),
+            t('plan_intermediate_d6', 'День 6: Закрепите правила безопасных ссылок и вложений'),
+            t('plan_intermediate_d7', 'День 7: Пройдите тест повторно'),
+        ];
+    }
+
+    return [
+        t('plan_beginner_d1', 'День 1: Изучите базовый раздел "Угрозы"'),
+        t('plan_beginner_d2', 'День 2: Пройдите тему "Пароли" в разделе "Обучение"'),
+        t('plan_beginner_d3', 'День 3: Включите 2FA хотя бы в одном аккаунте'),
+        t('plan_beginner_d4', 'День 4: Пройдите мини-тренажер "Фишинг или нет?"'),
+        t('plan_beginner_d5', 'День 5: Разберите ошибки и повторите слабые темы'),
+        t('plan_beginner_d6', 'День 6: Закрепите правила работы с письмами и ссылками'),
+        t('plan_beginner_d7', 'День 7: Пройдите тест заново и сравните результат'),
+    ];
+}
+
+(function initHomeTrustInsights() {
+    const lastResultElement = document.getElementById('home-last-result');
+    const bestResultElement = document.getElementById('home-best-result');
+    const levelElement = document.getElementById('home-level');
+    const nextStepElement = document.getElementById('home-next-step');
+    if (!lastResultElement || !bestResultElement || !levelElement || !nextStepElement) return;
+
+    const token = localStorage.getItem('cyberaware_token');
+    if (!token) return;
+
+    lastResultElement.textContent = t('common_loading', 'Загрузка...');
+    bestResultElement.textContent = t('common_loading', 'Загрузка...');
+    levelElement.textContent = t('common_determining', 'Определяем...');
+    nextStepElement.textContent = t('common_generating_recommendation', 'Формируем рекомендацию...');
+
+    fetch('/api/auth/test-results', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+        .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) throw new Error('Results unavailable');
+
+            const latest = data.latest;
+            const best = data.best;
+            const latestScore = latest?.score;
+            const latestTotal = latest?.total_questions;
+            const insight = buildLearningInsight(latestScore, latestTotal);
+
+            lastResultElement.textContent = latest
+                ? `${latest.score}/${latest.total_questions}`
+                : t('profile_no_data', 'Нет данных');
+
+            bestResultElement.textContent = best
+                ? `${best.score}/${best.total_questions}`
+                : t('profile_no_data', 'Нет данных');
+
+            levelElement.textContent = insight.level;
+            nextStepElement.textContent = insight.nextStep;
+        })
+        .catch(() => {
+            lastResultElement.textContent = t('common_load_error', 'Ошибка загрузки');
+            bestResultElement.textContent = t('common_load_error', 'Ошибка загрузки');
+            levelElement.textContent = t('trust_level_unknown', 'Не определен');
+            nextStepElement.textContent = t('common_recommendation_error', 'Не удалось получить рекомендации. Попробуйте позже.');
+        });
+})();
+
 (function initAuthButtonsVisibility() {
     const token = localStorage.getItem('cyberaware_token');
     if (!token) return;
@@ -660,6 +803,14 @@ requestAnimationFrame(raf);
     const emailElement = document.getElementById('profile-email');
     const lastResultElement = document.getElementById('profile-last-result');
     const bestResultElement = document.getElementById('profile-best-result');
+    const recommendationsContainer = document.getElementById('profile-recommendations');
+    const sevenDayPlanContainer = document.getElementById('profile-seven-day-plan');
+    const certificateBlock = document.getElementById('profile-certificate-block');
+    const certificateName = document.getElementById('certificate-name');
+    const certificateScore = document.getElementById('certificate-score');
+    const certificateDate = document.getElementById('certificate-date');
+    const certificateId = document.getElementById('certificate-id');
+    const certificateDownloadBtn = document.getElementById('certificate-download-btn');
     if (!fullNameElement || !emailElement) return;
 
     const token = localStorage.getItem('cyberaware_token');
@@ -708,6 +859,7 @@ requestAnimationFrame(raf);
 
             const latest = data.latest;
             const best = data.best;
+            const insight = buildLearningInsight(latest?.score, latest?.total_questions);
 
             lastResultElement.textContent = latest
                 ? `${latest.score}/${latest.total_questions}`
@@ -715,10 +867,163 @@ requestAnimationFrame(raf);
 
             bestResultElement.textContent = best
                 ? `${best.score}/${best.total_questions}`
-                : 'Нет данных';
+                : t('profile_no_data', 'Нет данных');
+
+            if (certificateBlock && certificateName && certificateScore && certificateDate) {
+                if (latest) {
+                    const currentName = fullNameElement.textContent?.trim() || t('profile_user_display', 'Пользователь CyberAware');
+                    const issuedAt = latest.created_at
+                        ? new Date(latest.created_at).toLocaleDateString(localStorage.getItem('cyberaware_lang') === 'en' ? 'en-US' : 'ru-RU')
+                        : new Date().toLocaleDateString(localStorage.getItem('cyberaware_lang') === 'en' ? 'en-US' : 'ru-RU');
+                    certificateName.textContent = currentName;
+                    certificateScore.textContent = `${latest.score}/${latest.total_questions}`;
+                    certificateDate.textContent = issuedAt;
+                    certificateId.textContent = `CA-${String(latest.id || latest.created_at || Date.now()).replace(/[^0-9]/g, '').slice(-8) || '00000000'}`;
+                    certificateBlock.style.display = 'block';
+                } else {
+                    certificateBlock.style.display = 'none';
+                }
+            }
+
+            if (recommendationsContainer) {
+                recommendationsContainer.innerHTML = '';
+                insight.recommendations.forEach((recommendation, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'results-row';
+                    row.innerHTML = `
+                        <span class="results-label">${t('profile_tip_label', 'Совет')} ${index + 1}</span>
+                        <span class="results-value">${recommendation}</span>
+                    `;
+                    recommendationsContainer.appendChild(row);
+                });
+            }
+
+            if (sevenDayPlanContainer) {
+                const planItems = buildSevenDayPlan(insight.level);
+                sevenDayPlanContainer.innerHTML = '';
+                planItems.forEach((item, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'results-row';
+                    row.innerHTML = `
+                        <span class="results-label">${t('profile_day_label', 'День')} ${index + 1}</span>
+                        <span class="results-value">${item}</span>
+                    `;
+                    sevenDayPlanContainer.appendChild(row);
+                });
+            }
         })
         .catch(() => {
-            lastResultElement.textContent = 'Ошибка загрузки';
-            bestResultElement.textContent = 'Ошибка загрузки';
+            lastResultElement.textContent = t('common_load_error', 'Ошибка загрузки');
+            bestResultElement.textContent = t('common_load_error', 'Ошибка загрузки');
+            if (recommendationsContainer) {
+                recommendationsContainer.innerHTML = `
+                    <div class="results-row">
+                        <span class="results-label">${t('profile_recommendations_unavailable', 'Рекомендации недоступны')}</span>
+                        <span class="results-value">${t('common_try_later', 'Попробуйте позже')}</span>
+                    </div>
+                `;
+            }
+            if (sevenDayPlanContainer) {
+                sevenDayPlanContainer.innerHTML = `
+                    <div class="results-row">
+                        <span class="results-label">${t('profile_plan_unavailable', 'План недоступен')}</span>
+                        <span class="results-value">${t('common_try_later', 'Попробуйте позже')}</span>
+                    </div>
+                `;
+            }
+            if (certificateBlock) {
+                certificateBlock.style.display = 'none';
+            }
         });
+
+    if (certificateDownloadBtn) {
+        certificateDownloadBtn.addEventListener('click', () => {
+            const holderName = certificateName?.textContent?.trim() || t('profile_user_display', 'Пользователь CyberAware');
+            const scoreValue = certificateScore?.textContent?.trim() || '-';
+            const dateValue = certificateDate?.textContent?.trim() || new Date().toLocaleDateString();
+            const idValue = certificateId?.textContent?.trim() || `CA-${Date.now().toString().slice(-8)}`;
+            const lang = localStorage.getItem('cyberaware_lang') === 'en' ? 'en' : 'ru';
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1600;
+            canvas.height = 1100;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#f8fbff');
+            gradient.addColorStop(1, '#eef6ff');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#0b3a63';
+            ctx.lineWidth = 10;
+            ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+            ctx.strokeStyle = '#93c5fd';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(70, 70, canvas.width - 140, canvas.height - 140);
+
+            ctx.strokeStyle = 'rgba(14, 116, 144, 0.22)';
+            ctx.setLineDash([8, 10]);
+            ctx.lineWidth = 2;
+            ctx.strokeRect(95, 95, canvas.width - 190, canvas.height - 190);
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = '700 64px Inter, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(lang === 'en' ? 'Completion Certificate' : 'Сертификат о прохождении', canvas.width / 2, 220);
+
+            ctx.fillStyle = '#475569';
+            ctx.font = '400 34px Inter, Arial, sans-serif';
+            ctx.fillText(lang === 'en' ? 'This certifies that' : 'Настоящим подтверждается, что', canvas.width / 2, 300);
+
+            ctx.fillStyle = '#0b4a6f';
+            ctx.font = '700 60px Inter, Arial, sans-serif';
+            ctx.fillText(holderName, canvas.width / 2, 410);
+
+            ctx.fillStyle = '#334155';
+            ctx.font = '400 34px Inter, Arial, sans-serif';
+            ctx.fillText(
+                lang === 'en'
+                    ? 'successfully completed CyberAware test track'
+                    : 'успешно прошел(ла) тестовый трек CyberAware',
+                canvas.width / 2,
+                490
+            );
+
+            ctx.font = '600 33px Inter, Arial, sans-serif';
+            ctx.fillStyle = '#0f172a';
+            ctx.fillText(`${lang === 'en' ? 'Score' : 'Результат'}: ${scoreValue}`, canvas.width / 2, 590);
+            ctx.fillText(`${lang === 'en' ? 'Date' : 'Дата'}: ${dateValue}`, canvas.width / 2, 650);
+            ctx.fillText(`ID: ${idValue}`, canvas.width / 2, 710);
+
+            ctx.strokeStyle = 'rgba(2, 132, 199, 0.45)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(200, 790);
+            ctx.lineTo(1400, 790);
+            ctx.stroke();
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#0369a1';
+            ctx.font = '700 30px Inter, Arial, sans-serif';
+            ctx.fillText('CyberAware Academy', 120, 960);
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = '400 24px Inter, Arial, sans-serif';
+            ctx.fillText(lang === 'en' ? 'Authorized Signature' : 'Уполномоченная подпись', 120, 995);
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#475569';
+            ctx.font = '400 24px Inter, Arial, sans-serif';
+            ctx.fillText(lang === 'en' ? 'Digital Safety Education' : 'Образование цифровой безопасности', canvas.width - 120, 960);
+
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `cyberaware-certificate-${idValue}.png`;
+            link.click();
+        });
+    }
 })();

@@ -105,6 +105,128 @@
             color: #0f172a;
             font-weight: 700;
         }
+
+        .certificate-block {
+            margin-top: 1.5rem;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #ffffff, #f8fbff);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 22px 50px rgba(15, 23, 42, 0.14);
+            padding: 1.2rem;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate-block::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 12% 20%, rgba(14, 165, 233, 0.14), transparent 35%),
+                radial-gradient(circle at 88% 80%, rgba(37, 99, 235, 0.12), transparent 35%);
+            z-index: 0;
+        }
+
+        .certificate-title {
+            margin: 0 0 0.6rem;
+            color: #0c4a6e;
+            font-weight: 800;
+            font-size: 1.15rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .certificate-card {
+            background: #ffffff;
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            border-radius: 18px;
+            padding: 1.1rem;
+            position: relative;
+            z-index: 1;
+            box-shadow: inset 0 0 0 3px rgba(186, 230, 253, 0.5);
+        }
+
+        .certificate-card::after {
+            content: "CERTIFIED";
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: rgba(14, 116, 144, 0.32);
+            font-weight: 800;
+        }
+
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .certificate-badge {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            margin: 0 auto 0.45rem;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            color: #ffffff;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(14, 116, 144, 0.3);
+        }
+
+        .certificate-header h4 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        .certificate-meta {
+            margin-top: 0.8rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.7rem;
+        }
+
+        .certificate-row {
+            background: #f8fbff;
+            border-radius: 10px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            padding: 0.65rem;
+        }
+
+        .certificate-row-label {
+            color: #64748b;
+            font-size: 0.85rem;
+            display: block;
+        }
+
+        .certificate-row-value {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .certificate-actions {
+            margin-top: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .certificate-signature {
+            color: #334155;
+            font-size: 0.85rem;
+        }
+
+        .certificate-signature strong {
+            display: block;
+            color: #0f172a;
+        }
     </style>
 </head>
 <body>
@@ -128,6 +250,7 @@
             <a href="threats.html" class="btn btn-secondary" data-i18n="nav_threats">Угрозы</a>
             <a href="learning.html" class="btn btn-secondary" data-i18n="nav_learning">Обучение</a>
             <a href="tips.html" class="btn btn-secondary" data-i18n="nav_tips">Советы</a>
+            <a href="mini-trainer.html" class="btn btn-secondary" data-i18n="nav_mini_trainer">Мини-тренажер</a>
         </div>
     </header>
 
@@ -160,14 +283,71 @@
             </div>
 
             <div class="results-block">
-                <h3>Мои результаты</h3>
+                <h3 data-i18n="profile_results_title">Мои результаты</h3>
                 <div class="results-row">
-                    <span class="results-label">Последний результат</span>
-                    <span class="results-value" id="profile-last-result">Нет данных</span>
+                    <span class="results-label" data-i18n="profile_last_result">Последний результат</span>
+                    <span class="results-value" id="profile-last-result" data-i18n="profile_no_data">Нет данных</span>
                 </div>
                 <div class="results-row">
-                    <span class="results-label">Лучший результат</span>
-                    <span class="results-value" id="profile-best-result">Нет данных</span>
+                    <span class="results-label" data-i18n="profile_best_result">Лучший результат</span>
+                    <span class="results-value" id="profile-best-result" data-i18n="profile_no_data">Нет данных</span>
+                </div>
+            </div>
+
+            <div class="results-block">
+                <h3 data-i18n="profile_recommendations_title">Персональные рекомендации</h3>
+                <div id="profile-recommendations">
+                    <div class="results-row">
+                        <span class="results-label" data-i18n="profile_no_data_yet">Пока нет данных</span>
+                        <span class="results-value" data-i18n="profile_take_test">Пройдите тест</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-block">
+                <h3 data-i18n="profile_plan_title">План обучения на 7 дней</h3>
+                <div id="profile-seven-day-plan">
+                    <div class="results-row">
+                        <span class="results-label" data-i18n="profile_day_1">День 1</span>
+                        <span class="results-value" data-i18n="profile_take_test">Пройдите тест</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="certificate-block" id="profile-certificate-block">
+                <p class="certificate-title" data-i18n="certificate_title">Сертификат о прохождении</p>
+                <div class="certificate-card" id="profile-certificate-card">
+                    <div class="certificate-header">
+                        <div class="certificate-badge"><i class="fas fa-award"></i></div>
+                        <h4 data-i18n="certificate_header">Certificate of Achievement</h4>
+                    </div>
+
+                    <div class="certificate-meta">
+                        <div class="certificate-row">
+                            <span class="certificate-row-label" data-i18n="certificate_name_label">Имя</span>
+                            <span class="certificate-row-value" id="certificate-name">—</span>
+                        </div>
+                        <div class="certificate-row">
+                            <span class="certificate-row-label" data-i18n="certificate_score_label">Результат</span>
+                            <span class="certificate-row-value" id="certificate-score">—</span>
+                        </div>
+                        <div class="certificate-row">
+                            <span class="certificate-row-label" data-i18n="certificate_date_label">Дата</span>
+                            <span class="certificate-row-value" id="certificate-date">—</span>
+                        </div>
+                        <div class="certificate-row">
+                            <span class="certificate-row-label" data-i18n="certificate_id_label">ID</span>
+                            <span class="certificate-row-value" id="certificate-id">—</span>
+                        </div>
+                    </div>
+
+                    <div class="certificate-actions">
+                        <div class="certificate-signature">
+                            <span data-i18n="certificate_signed_by_label">Подписано</span>
+                            <strong>CyberAware Academy</strong>
+                        </div>
+                        <button class="btn btn-primary" type="button" id="certificate-download-btn" data-i18n="certificate_download_btn">Скачать сертификат</button>
+                    </div>
                 </div>
             </div>
         </section>

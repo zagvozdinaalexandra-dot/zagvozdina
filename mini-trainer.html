@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="mini_page_title">Мини-тренажер - CyberAware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .mini-wrapper {
+            max-width: 980px;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem;
+        }
+
+        .mini-card {
+            background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.15), rgba(255, 255, 255, 0.95) 40%);
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+            padding: 1.6rem;
+        }
+
+        .mini-card h1 {
+            margin: 0 0 0.5rem;
+            color: #0f172a;
+        }
+
+        .mini-card p {
+            color: #475569;
+        }
+
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .mini-stat {
+            background: #ffffff;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 12px;
+            padding: 0.8rem;
+        }
+
+        .mini-stat-title {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .mini-stat-value {
+            font-size: 1.15rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .mini-progress {
+            margin-top: 0.9rem;
+            background: rgba(148, 163, 184, 0.25);
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .mini-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #0ea5e9, #2563eb);
+            transition: width 0.35s ease;
+        }
+
+        .mini-email-card {
+            background: #f8fafc;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .risk-chip {
+            position: absolute;
+            top: 0.7rem;
+            right: 0.7rem;
+            border-radius: 999px;
+            padding: 0.2rem 0.65rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(14, 165, 233, 0.13);
+            color: #0369a1;
+        }
+
+        .mini-hint {
+            margin-top: 0.75rem;
+            padding: 0.6rem 0.7rem;
+            border-radius: 8px;
+            border: 1px dashed rgba(148, 163, 184, 0.7);
+            color: #475569;
+            background: #ffffff;
+        }
+
+        .mini-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .mini-feedback {
+            margin-top: 0.85rem;
+            min-height: 1.4rem;
+            font-weight: 600;
+        }
+
+        .mini-next-btn {
+            margin-top: 0.8rem;
+            display: none;
+        }
+
+        .mini-summary {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(37, 99, 235, 0.25);
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        .mini-summary h3 {
+            margin: 0 0 0.45rem;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
+                <i class="fas fa-shield-alt"></i> CyberAware
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <div class="lang-flag active" data-lang="ru" onclick="switchLanguage('ru')">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский">
+                </div>
+                <div class="lang-flag" data-lang="en" onclick="switchLanguage('en')">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English">
+                </div>
+            </div>
+            <a href="threats.html" class="btn btn-secondary" data-i18n="nav_threats">Угрозы</a>
+            <a href="learning.html" class="btn btn-secondary" data-i18n="nav_learning">Обучение</a>
+            <a href="tips.html" class="btn btn-secondary" data-i18n="nav_tips">Советы</a>
+            <a href="mini-trainer.html" class="btn btn-secondary" data-i18n="nav_mini_trainer">Мини-тренажер</a>
+            <a href="tests.html" class="btn btn-secondary" data-i18n="nav_test">Тест</a>
+        </div>
+    </header>
+
+    <main class="mini-wrapper">
+        <section class="mini-card">
+            <h1 data-i18n="mini_trainer_title">Мини-тренажер: Фишинг или нет?</h1>
+            <p data-i18n="mini_page_subtitle">Определите, является ли письмо фишинговым, и получите моментальный разбор.</p>
+
+            <div class="mini-stats">
+                <div class="mini-stat">
+                    <div class="mini-stat-title" data-i18n="mini_stat_score">Очки</div>
+                    <div class="mini-stat-value" id="mini-score">0</div>
+                </div>
+                <div class="mini-stat">
+                    <div class="mini-stat-title" data-i18n="mini_stat_streak">Серия</div>
+                    <div class="mini-stat-value" id="mini-streak">0</div>
+                </div>
+                <div class="mini-stat">
+                    <div class="mini-stat-title" data-i18n="mini_stat_lives">Жизни</div>
+                    <div class="mini-stat-value" id="mini-lives">3</div>
+                </div>
+                <div class="mini-stat">
+                    <div class="mini-stat-title" data-i18n="mini_stat_round">Раунд</div>
+                    <div class="mini-stat-value" id="mini-round">1/1</div>
+                </div>
+            </div>
+
+            <div class="mini-progress" aria-hidden="true">
+                <div class="mini-progress-fill" id="mini-progress-fill"></div>
+            </div>
+
+            <div class="mini-email-card">
+                <span class="risk-chip" id="mini-risk-chip" data-i18n="mini_risk_review">Разбор письма</span>
+                <p id="mini-email-sender"><strong data-i18n="mini_label_from">От:</strong> ...</p>
+                <p id="mini-email-subject"><strong data-i18n="mini_label_subject">Тема:</strong> ...</p>
+                <p id="mini-email-body" data-i18n="mini_loading_case">Загрузка сценария...</p>
+                <div class="mini-hint" id="mini-hint" data-i18n="mini_hint_default">Подсказка: проверьте домен отправителя и наличие срочности.</div>
+            </div>
+
+            <div class="mini-actions">
+                <button class="btn btn-secondary" id="mini-safe-btn" type="button" data-i18n="mini_btn_safe">Это безопасно</button>
+                <button class="btn btn-primary" id="mini-phishing-btn" type="button" data-i18n="mini_btn_phishing">Это фишинг</button>
+            </div>
+            <div class="mini-feedback" id="mini-feedback"></div>
+            <button class="btn btn-primary mini-next-btn" id="mini-next-btn" type="button" data-i18n="mini_btn_next_round">Следующий раунд</button>
+
+            <div class="mini-summary" id="mini-summary">
+                <h3 data-i18n="mini_summary_title">Тренировка завершена</h3>
+                <p id="mini-summary-text" data-i18n="mini_summary_default">Вы прошли мини-тренажер.</p>
+                <button class="btn btn-secondary" id="mini-restart-btn" type="button" data-i18n="mini_btn_restart">Играть снова</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const token = localStorage.getItem('cyberaware_token');
+        if (!token) {
+            localStorage.setItem('cyberaware_post_auth_redirect', 'mini-trainer.html');
+            window.location.href = 'auth.html';
+        }
+
+        const miniSafeBtn = document.getElementById('mini-safe-btn');
+        const miniPhishingBtn = document.getElementById('mini-phishing-btn');
+        const miniFeedback = document.getElementById('mini-feedback');
+        const miniEmailSender = document.getElementById('mini-email-sender');
+        const miniEmailSubject = document.getElementById('mini-email-subject');
+        const miniEmailBody = document.getElementById('mini-email-body');
+        const miniHint = document.getElementById('mini-hint');
+        const miniScoreElement = document.getElementById('mini-score');
+        const miniStreakElement = document.getElementById('mini-streak');
+        const miniLivesElement = document.getElementById('mini-lives');
+        const miniRoundElement = document.getElementById('mini-round');
+        const miniProgressFill = document.getElementById('mini-progress-fill');
+        const miniNextBtn = document.getElementById('mini-next-btn');
+        const miniSummary = document.getElementById('mini-summary');
+        const miniSummaryText = document.getElementById('mini-summary-text');
+        const miniRestartBtn = document.getElementById('mini-restart-btn');
+        const miniRiskChip = document.getElementById('mini-risk-chip');
+
+        const microTrainerCases = [
+            {
+                sender: 'security@company-support-check.com',
+                subject: { ru: 'Срочно подтвердите пароль', en: 'Urgent: confirm your password' },
+                body: {
+                    ru: 'Обнаружена активность. Перейдите по ссылке и введите пароль в течение 15 минут.',
+                    en: 'Suspicious activity detected. Follow the link and enter your password within 15 minutes.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Давление по времени и запрос пароля через ссылку — классический признак фишинга.',
+                    en: 'Urgency pressure plus password request through a link is a classic phishing pattern.',
+                },
+                hint: {
+                    ru: 'Есть срочность и прямой запрос ввести пароль.',
+                    en: 'There is urgency and a direct request to enter a password.',
+                }
+            },
+            {
+                sender: 'no-reply@yourbank.kz',
+                subject: { ru: 'Ежемесячная выписка', en: 'Monthly statement' },
+                body: {
+                    ru: 'Ваша выписка доступна в мобильном приложении. Без ссылок и вложений.',
+                    en: 'Your statement is available in the mobile app. No links or attachments.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Нейтральный текст без срочности и без запроса личных данных.',
+                    en: 'Neutral wording without urgency and without requests for personal data.',
+                },
+                hint: {
+                    ru: 'Нет давления, нет запроса конфиденциальной информации.',
+                    en: 'No pressure and no request for confidential information.',
+                }
+            },
+            {
+                sender: 'it-helpdesk@yeesnov.edu',
+                subject: { ru: 'Подтвердите вход для сохранения аккаунта', en: 'Confirm login to keep your account' },
+                body: {
+                    ru: 'Если не подтвердите доступ сейчас, почта будет заблокирована. Введите код и пароль.',
+                    en: 'If you do not confirm access now, your mailbox will be blocked. Enter code and password.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Подозрительный домен и требование пароля — высокий риск фишинга.',
+                    en: 'A suspicious domain and password request indicate a high phishing risk.',
+                },
+                hint: {
+                    ru: 'Пугающий сценарий блокировки и запрос пароля.',
+                    en: 'Fear-driven lockout scenario and a password request.',
+                }
+            },
+            {
+                sender: 'security@google.com',
+                subject: { ru: 'Новый вход в ваш аккаунт', en: 'New sign-in to your account' },
+                body: {
+                    ru: 'Если это были не вы, откройте приложение и смените пароль в настройках безопасности.',
+                    en: 'If this was not you, open the app and change your password in security settings.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Официальный домен и безопасный путь через приложение без запроса данных в письме.',
+                    en: 'Official domain and safe flow through the app without asking for secrets in email.',
+                },
+                hint: {
+                    ru: 'Проверьте: домен корректный, действия через официальное приложение.',
+                    en: 'Check this: valid domain and actions via official app.',
+                }
+            },
+            {
+                sender: 'alerts@micr0soft-secure-login.net',
+                subject: { ru: 'Обнаружена угроза, подтвердите вход', en: 'Threat detected, confirm sign-in' },
+                body: {
+                    ru: 'Скачайте вложение и введите учетные данные для проверки безопасности.',
+                    en: 'Download the attachment and enter credentials for a security check.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Подмена домена и просьба скачать вложение/ввести данные — критичный индикатор.',
+                    en: 'Domain spoofing plus attachment/credential request is a critical indicator.',
+                },
+                hint: {
+                    ru: 'Подозрительный домен с заменой символов.',
+                    en: 'Suspicious domain with character substitution.',
+                }
+            },
+            {
+                sender: 'academy@university.edu',
+                subject: { ru: 'Обновление расписания курсов', en: 'Course schedule update' },
+                body: {
+                    ru: 'Новое расписание доступно в LMS портале. Войдите через официальный сайт университета.',
+                    en: 'The new schedule is available in the LMS portal. Sign in through the official university website.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Безопасная формулировка без давления и без небезопасных действий.',
+                    en: 'Safe wording without pressure and without risky actions.',
+                },
+                hint: {
+                    ru: 'Нет призывов перейти по странной ссылке или срочно отправить данные.',
+                    en: 'No push to strange links or urgent data sharing.',
+                }
+            },
+            {
+                sender: 'finance@paypaI-support.help',
+                subject: { ru: 'Платеж отклонен, подтвердите карту', en: 'Payment declined, verify your card' },
+                body: {
+                    ru: 'Чтобы избежать блокировки, срочно введите CVV и пароль по ссылке в письме.',
+                    en: 'To avoid suspension, urgently enter CVV and password through the link in the email.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Фальшивый домен и запрос CVV/пароля — типичный мошеннический шаблон.',
+                    en: 'Fake domain and CVV/password request indicate a common fraud pattern.',
+                },
+                hint: {
+                    ru: 'Запрос CVV и пароля в письме недопустим.',
+                    en: 'CVV and password requests by email are never acceptable.',
+                }
+            },
+            {
+                sender: 'no-reply@github.com',
+                subject: { ru: 'Ваш код восстановления', en: 'Your recovery code' },
+                body: {
+                    ru: 'Код безопасности: 104829. Никому не сообщайте его. Если это не вы, проигнорируйте письмо.',
+                    en: 'Security code: 104829. Never share it. If this was not you, ignore this email.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Сообщение соответствует официальному шаблону и не требует перехода по опасным ссылкам.',
+                    en: 'The message matches official template style and does not require risky link clicks.',
+                },
+                hint: {
+                    ru: 'Нейтральный тон и отсутствие подозрительных ссылок.',
+                    en: 'Neutral tone and no suspicious links.',
+                }
+            },
+            {
+                sender: 'security-alert@appleid-verification.help',
+                subject: { ru: 'Apple ID будет удален через 2 часа', en: 'Apple ID will be deleted in 2 hours' },
+                body: {
+                    ru: 'Для отмены удаления срочно подтвердите данные карты и пароль по ссылке.',
+                    en: 'To prevent deletion, urgently confirm card details and password via the link.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Давление по времени и запрос платежных данных в письме говорят о мошенничестве.',
+                    en: 'Urgency pressure and payment data requests in email indicate fraud.',
+                },
+                hint: {
+                    ru: 'Официальные сервисы не запрашивают пароль и карту по email.',
+                    en: 'Official services never request password and card data by email.',
+                }
+            },
+            {
+                sender: 'noreply@kaspi.kz',
+                subject: { ru: 'Вход в аккаунт с нового устройства', en: 'Sign-in from a new device' },
+                body: {
+                    ru: 'Если это были не вы, откройте приложение Kaspi и завершите чужую сессию.',
+                    en: 'If this was not you, open the Kaspi app and end the unknown session.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Корректный домен и безопасная рекомендация через официальное приложение.',
+                    en: 'Correct domain and safe guidance via official app.',
+                },
+                hint: {
+                    ru: 'Обратите внимание на домен и отсутствие требования передавать секреты.',
+                    en: 'Check the domain and absence of requests to share secrets.',
+                }
+            },
+            {
+                sender: 'support@telegram-secure-center.net',
+                subject: { ru: 'Подтвердите ваш номер для защиты аккаунта', en: 'Confirm your number to secure account' },
+                body: {
+                    ru: 'Отправьте код из SMS и пароль в ответном письме, иначе аккаунт будет заблокирован.',
+                    en: 'Reply with your SMS code and password or your account will be blocked.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Запрос одноразового кода и пароля — критический признак фишинга.',
+                    en: 'Requests for OTP codes and passwords are critical phishing indicators.',
+                },
+                hint: {
+                    ru: 'Никому нельзя передавать OTP-коды.',
+                    en: 'Never share OTP codes with anyone.',
+                }
+            },
+            {
+                sender: 'billing@adobe.com',
+                subject: { ru: 'Квитанция за подписку', en: 'Subscription receipt' },
+                body: {
+                    ru: 'Счет и детали оплаты доступны в вашем личном кабинете Adobe.',
+                    en: 'Invoice and payment details are available in your Adobe account.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Нейтральное уведомление без подозрительных действий и давления.',
+                    en: 'Neutral notification without suspicious actions or pressure.',
+                },
+                hint: {
+                    ru: 'Без срочности и без требований отправить данные.',
+                    en: 'No urgency and no demand to send private data.',
+                }
+            },
+            {
+                sender: 'itadmin@yessenov-univercity.edu',
+                subject: { ru: 'Проверка учетной записи студента', en: 'Student account verification' },
+                body: {
+                    ru: 'Введите логин и пароль в форму для подтверждения доступа к порталу.',
+                    en: 'Enter your login and password into the form to verify portal access.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Ошибочный домен и прямой запрос логина/пароля указывают на подделку.',
+                    en: 'Misspelled domain and direct credential request indicate spoofing.',
+                },
+                hint: {
+                    ru: 'Проверьте орфографию домена: есть ли подмена букв.',
+                    en: 'Check domain spelling for subtle character swaps.',
+                }
+            },
+            {
+                sender: 'alerts@paypal.com',
+                subject: { ru: 'Подозрительная активность в аккаунте', en: 'Suspicious activity in your account' },
+                body: {
+                    ru: 'Мы заметили необычный вход. Проверьте список устройств в приложении.',
+                    en: 'We noticed an unusual sign-in. Check your devices list in the app.',
+                },
+                isPhishing: false,
+                explanation: {
+                    ru: 'Сообщение предлагает безопасное действие без передачи чувствительных данных.',
+                    en: 'The message suggests safe action without sharing sensitive data.',
+                },
+                hint: {
+                    ru: 'Хороший знак: нет просьбы сообщить пароль/код.',
+                    en: 'Good sign: no request for password or code.',
+                }
+            },
+            {
+                sender: 'security@bank-kz-support.org',
+                subject: { ru: 'Срочное обновление KYC', en: 'Urgent KYC update' },
+                body: {
+                    ru: 'Загрузите фото карты с двух сторон и укажите CVV-код для подтверждения личности.',
+                    en: 'Upload front/back card photos and provide CVV code for identity verification.',
+                },
+                isPhishing: true,
+                explanation: {
+                    ru: 'Запрос CVV и фото карты через письмо — опасная и невалидная практика.',
+                    en: 'CVV and card-photo requests by email are dangerous and invalid.',
+                },
+                hint: {
+                    ru: 'CVV нельзя передавать по email.',
+                    en: 'CVV must never be shared via email.',
+                }
+            }
+        ];
+
+        const totalRounds = microTrainerCases.length;
+        let shuffledCases = [];
+        let miniIndex = 0;
+        let miniStreak = 0;
+        let miniScore = 0;
+        let miniLives = 3;
+        let answeredLocked = false;
+
+        function miniT(key, fallback) {
+            const lang = localStorage.getItem('cyberaware_lang') === 'en' ? 'en' : 'ru';
+            if (typeof translations !== 'undefined' && translations[lang] && translations[lang][key]) {
+                return translations[lang][key];
+            }
+            return fallback;
+        }
+
+        function miniText(value) {
+            const lang = localStorage.getItem('cyberaware_lang') === 'en' ? 'en' : 'ru';
+            if (value && typeof value === 'object') {
+                return value[lang] || value.ru || '';
+            }
+            return value || '';
+        }
+
+        function renderMiniCase() {
+            const currentCase = shuffledCases[miniIndex];
+            miniEmailSender.innerHTML = `<strong>${miniT('mini_label_from', 'От:')}</strong> ${currentCase.sender}`;
+            miniEmailSubject.innerHTML = `<strong>${miniT('mini_label_subject', 'Тема:')}</strong> ${miniText(currentCase.subject)}`;
+            miniEmailBody.textContent = miniText(currentCase.body);
+            miniHint.textContent = `${miniT('mini_hint_prefix', 'Подсказка')}: ${miniText(currentCase.hint)}`;
+            miniFeedback.textContent = `${miniT('mini_streak_label', 'Серия правильных ответов')}: ${miniStreak}`;
+            miniFeedback.style.color = '#334155';
+            miniRiskChip.textContent = currentCase.isPhishing
+                ? miniT('mini_risk_high', 'Высокий риск')
+                : miniT('mini_risk_low', 'Низкий риск');
+            miniRiskChip.style.background = currentCase.isPhishing ? 'rgba(239, 68, 68, 0.14)' : 'rgba(34, 197, 94, 0.14)';
+            miniRiskChip.style.color = currentCase.isPhishing ? '#b91c1c' : '#166534';
+            answeredLocked = false;
+            miniSafeBtn.disabled = false;
+            miniPhishingBtn.disabled = false;
+            miniNextBtn.style.display = 'none';
+            updateHud();
+        }
+
+        function updateHud() {
+            miniScoreElement.textContent = String(miniScore);
+            miniStreakElement.textContent = String(miniStreak);
+            miniLivesElement.textContent = '❤'.repeat(Math.max(0, miniLives));
+            miniRoundElement.textContent = `${Math.min(miniIndex + 1, totalRounds)}/${totalRounds}`;
+            miniProgressFill.style.width = `${(miniIndex / totalRounds) * 100}%`;
+        }
+
+        function finishTraining() {
+            miniProgressFill.style.width = '100%';
+            miniSummary.style.display = 'block';
+            const grade = miniScore >= 600
+                ? miniT('mini_grade_great', 'Отлично')
+                : miniScore >= 350
+                    ? miniT('mini_grade_good', 'Хороший результат')
+                    : miniT('mini_grade_start', 'Неплохой старт');
+            miniSummaryText.textContent = `${grade}: ${miniScore} ${miniT('mini_points', 'очков')}, ${miniT('mini_best_streak', 'лучшая серия')} ${miniStreakElement.textContent}. ${miniT('mini_summary_retry', 'Пройдите еще раз и побейте свой результат.')}`;
+            miniSafeBtn.disabled = true;
+            miniPhishingBtn.disabled = true;
+            miniNextBtn.style.display = 'none';
+        }
+
+        function goNextRound() {
+            miniIndex += 1;
+            if (miniIndex >= totalRounds || miniLives <= 0) {
+                finishTraining();
+                return;
+            }
+            renderMiniCase();
+        }
+
+        function answerMiniCase(userSaysPhishing) {
+            if (answeredLocked) return;
+            answeredLocked = true;
+            const currentCase = shuffledCases[miniIndex];
+            const isCorrect = userSaysPhishing === currentCase.isPhishing;
+
+            if (isCorrect) {
+                miniStreak += 1;
+                miniScore += 100 + miniStreak * 10;
+                miniFeedback.style.color = '#166534';
+                miniFeedback.textContent = `${miniT('mini_feedback_correct', 'Верно!')} ${miniText(currentCase.explanation)} ${miniT('mini_streak_short', 'Серия')}: ${miniStreak}`;
+            } else {
+                miniLives -= 1;
+                miniStreak = 0;
+                miniFeedback.style.color = '#b91c1c';
+                miniFeedback.textContent = `${miniT('mini_feedback_wrong', 'Почти.')} ${miniText(currentCase.explanation)} ${miniT('mini_streak_reset', 'Серия сброшена.')}`;
+            }
+            updateHud();
+            miniSafeBtn.disabled = true;
+            miniPhishingBtn.disabled = true;
+            miniNextBtn.style.display = 'inline-block';
+            miniNextBtn.textContent = miniLives > 0 && miniIndex < totalRounds - 1
+                ? miniT('mini_btn_next_round', 'Следующий раунд')
+                : miniT('mini_btn_show_result', 'Показать результат');
+        }
+
+        function shuffleCases() {
+            shuffledCases = [...microTrainerCases];
+            for (let i = shuffledCases.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledCases[i], shuffledCases[j]] = [shuffledCases[j], shuffledCases[i]];
+            }
+        }
+
+        function startTraining() {
+            miniIndex = 0;
+            miniStreak = 0;
+            miniScore = 0;
+            miniLives = 3;
+            miniSummary.style.display = 'none';
+            shuffleCases();
+            renderMiniCase();
+        }
+
+        miniSafeBtn.addEventListener('click', () => answerMiniCase(false));
+        miniPhishingBtn.addEventListener('click', () => answerMiniCase(true));
+        miniNextBtn.addEventListener('click', goNextRound);
+        miniRestartBtn.addEventListener('click', startTraining);
+        document.querySelectorAll('.lang-flag').forEach((flag) => {
+            flag.addEventListener('click', () => {
+                setTimeout(() => {
+                    if (shuffledCases.length && miniIndex < shuffledCases.length) {
+                        renderMiniCase();
+                    }
+                }, 0);
+            });
+        });
+        startTraining();
+    </script>
+</body>
+</html>
